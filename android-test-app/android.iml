@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/build/Development-19/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/resources" />
+        <option name="CUSTOM_APK_RESOURCE_FOLDER" value="/resources" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
+    </content>
+    <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="android_framework (v0.0.1, /Users/jannis/zoerptec/quickmeetup_apps/android-framework) [path][gem]">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../android-framework/lib" />
+          <root url="file://$MODULE_DIR$/../android-framework/.idea" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../android-framework/lib" />
+          <root url="file://$MODULE_DIR$/../android-framework/.idea" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="application (v0.0.1, /Users/jannis/zoerptec/quickmeetup_apps/application) [path][gem]">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../application/lib" />
+          <root url="file://$MODULE_DIR$/../application/.idea" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../application/lib" />
+          <root url="file://$MODULE_DIR$/../application/.idea" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="framework (v0.0.1, /Users/jannis/zoerptec/quickmeetup_apps/framework) [path][gem]">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../framework/lib" />
+          <root url="file://$MODULE_DIR$/../framework/.idea" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../framework/lib" />
+          <root url="file://$MODULE_DIR$/../framework/.idea" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>

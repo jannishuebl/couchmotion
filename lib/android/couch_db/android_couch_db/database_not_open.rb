@@ -1,0 +1,3 @@
+class DatabaseNotOpen < StandardError
+
+end

@@ -1,0 +1,24 @@
+#nd -*- coding: utf-8 -*-
+$:.unshift("/Library/RubyMotion/lib")
+require 'motion/project/template/android'
+
+begin
+  require 'bundler'
+  if ENV['ENVIRONMENT'] == 'local'
+    Bundler.require(:development)
+  else
+    Bundler.require(:default)
+  end
+rescue LoadError
+end
+
+Motion::Project::App.setup do |app|
+  # Use `rake config' to see complete project settings.
+  app.api_version = "19"
+  app.target_api_version = "19"
+  app.name = 'basicAndroidProject'
+  app.sub_activities += %w(AbstractActivity)
+  app.permissions << 'android.permission.WRITE_EXTERNAL_STORAGE'
+  app.permissions << 'android.permission.READ_EXTERNAL_STORAGE'
+end
+
