@@ -1,0 +1,65 @@
+From e57d14ccfafb595c77c8d2431117fd39229882eb Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Jannis=20H=C3=BCbl?= <jannis.huebl@web.de>
+Date: Mon, 2 Feb 2015 20:27:17 +0100
+Subject: [PATCH] add suport for packing raw files to apk
+
+---
+ lib/motion/project/template/android.rb        | 6 ++++--
+ lib/motion/project/template/android/config.rb | 3 ++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/lib/motion/project/template/android.rb b/lib/motion/project/template/android.rb
+index f7cf6c4..29055f1 100644
+--- a/lib/motion/project/template/android.rb
++++ b/lib/motion/project/template/android.rb
+@@ -96,6 +96,8 @@ task :build do
+       File.exist?(dir) and File.directory?(dir)
+     end
+   end
++  raw_files = grab_directories.call(App.config.raw_file_dirs)
++  aapt_raw_file = raw_files.join(' ')
+   assets_dirs = grab_directories.call(App.config.assets_dirs)
+   aapt_assets_flags = assets_dirs.map { |x| '-A "' + x + '"' }.join(' ')
+   resources_dirs = grab_directories.call(App.config.resources_dirs)
+@@ -107,7 +109,7 @@ task :build do
+   if !r_java_mtime or all_resources.any? { |x| Dir.glob(x + '/**/*').any? { |y| File.mtime(y) > r_java_mtime } }
+     packages_list = App.config.vendored_projects.map { |x| x[:package] }.compact.join(':')
+     extra_packages = packages_list.empty? ? '' : '--extra-packages ' + packages_list
+-    sh "\"#{App.config.build_tools_dir}/aapt\" package -f -M \"#{android_manifest}\" #{aapt_assets_flags} #{aapt_resources_flags} -I \"#{android_jar}\" -m -J \"#{java_dir}\" #{extra_packages} --auto-add-overlay"
++    sh "\"#{App.config.build_tools_dir}/aapt\" package -f -M \"#{android_manifest}\" #{aapt_assets_flags} #{aapt_resources_flags} -I \"#{android_jar}\" -m -J \"#{java_dir}\" #{extra_packages} --auto-add-overlay #{aapt_raw_file}"
+ 
+     r_java = Dir.glob(java_dir + '/**/R.java')
+     classes_dir = File.join(app_build_dir, 'classes')
+@@ -421,7 +423,7 @@ EOS
+       or resources_dirs.any? { |x| File.mtime(x) > File.mtime(archive) } \
+       or native_libs.any? { |x| File.mtime("#{app_build_dir}/#{x}") > File.mtime(archive) }
+     App.info 'Create', archive
+-    sh "\"#{App.config.build_tools_dir}/aapt\" package -f -M \"#{android_manifest}\" #{aapt_assets_flags} #{aapt_resources_flags} -I \"#{android_jar}\" -F \"#{archive}\" --auto-add-overlay"
++    sh "\"#{App.config.build_tools_dir}/aapt\" package -f -M \"#{android_manifest}\" #{aapt_assets_flags} #{aapt_resources_flags} -I \"#{android_jar}\" -F \"#{archive}\" --auto-add-overlay #{aapt_raw_file}"
+     Dir.chdir(app_build_dir) do
+       [File.basename(dex_classes), libpayload_subpath, *native_libs, gdbserver_subpath].each do |file|
+         line = "\"#{App.config.build_tools_dir}/aapt\" add -f \"#{File.basename(archive)}\" \"#{file}\""
+diff --git a/lib/motion/project/template/android/config.rb b/lib/motion/project/template/android/config.rb
+index 1b718c2..4433886 100644
+--- a/lib/motion/project/template/android/config.rb
++++ b/lib/motion/project/template/android/config.rb
+@@ -95,7 +95,7 @@ module Motion; module Project;
+     variable :sdk_path, :ndk_path, :avd_config, :package, :main_activity,
+       :sub_activities, :api_version, :target_api_version, :arch, :assets_dirs,
+       :icon, :logs_components, :version_code, :version_name, :permissions,
+-      :features, :services, :application_class, :manifest
++      :features, :services, :application_class, :manifest, :raw_file_dirs
+ 
+     def initialize(project_dir, build_mode)
+       super
+@@ -104,6 +104,7 @@ module Motion; module Project;
+       @sub_activities = []
+       @arch = 'armv5te'
+       @assets_dirs = [File.join(project_dir, 'assets')]
++      @raw_file_dirs = []
+       @vendored_projects = []
+       @permissions = []
+       @features = []
+-- 
+1.9.3 (Apple Git-50)
+
