@@ -160,4 +160,16 @@ class Hash
         object
       end
     end
+
+
+    def hmap!(&block)
+      self.keys.each do |key|
+        hash = block.call(key, self[key])
+
+        self[hash.keys.first] = hash[hash.keys.first]
+        self.delete(key)
+      end
+      self
+    end
+
 end

@@ -25,6 +25,8 @@ def config_couchmotion_for_android(app)
     app.vendor_project :jar => "#{vendor_dir}/#{jar}"
   end
 
+  app.raw_file_dirs << File.join(File.dirname(__FILE__), '../vendor/raw_files')
+
 end
 
 def jars

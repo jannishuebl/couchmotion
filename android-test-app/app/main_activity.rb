@@ -1,4 +1,4 @@
-class MainActivity < Activity
+class MainActivity < Android::App::Activity
 
   def onCreate(savedInstanceState)
     super savedInstanceState
