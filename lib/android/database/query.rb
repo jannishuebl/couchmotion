@@ -8,7 +8,11 @@ class CouchDB
 
       def execute
         result = @android_query.run
-        CouchDB::Enumerator::Android.new result
+        CouchDB::Enumerator::AndroidEnumerator.new result
+      end
+
+      def keys(keys)
+        @android_query.setKeys(keys)
       end
 
     end
