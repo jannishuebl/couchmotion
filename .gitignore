@@ -46,3 +46,4 @@ nbproject
 .sass-cache
 .idea
 .dat*.*
+*.bridgesupport
