@@ -2,6 +2,9 @@ unless defined?(Motion::Project::Config)
   raise "This file must be required within a RubyMotion project Rakefile."
 end
 
+require 'rubygems'
+require 'motion-maven'
+
 Motion::Project::App.setup do |app|
 
 
@@ -21,35 +24,27 @@ def config_couchmotion_for_android(app)
     app.files.unshift(file)
   end
 
+  app.maven do 
+    dependency 'com.couchbase.lite', :artifact => 'couchbase-lite-android', :version => '1.0.4', :type => 'aar'
+  end
+
   vendor_dir = File.join(File.dirname(__FILE__), '../vendor')
   libs = []
   libs << "#{vendor_dir}/raw_files/lib/armeabi/libcom_couchbase_touchdb_RevCollator.so"
   libs << "#{vendor_dir}/raw_files/lib/armeabi/libcom_couchbase_touchdb_TDCollateJSON.so"
-  jars.each do |jar|
-    app.vendor_project :jar => "#{vendor_dir}/#{jar}"
-  end
+
   app.vendor_project :jar => "#{vendor_dir}/cbl_collator_so-1.0.3.1.jar", :native => libs
-
-  app.raw_file_dirs << "#{vendor_dir}/raw_files2"
-
-end
-
-def jars
-  ['couchbase-lite-android-1.0.3.1.jar',
-   'commons-io-2.0.1.jar',
-   'couchbase-lite-java-core-1.0.3.1.jar',
-   'couchbase-lite-java-javascript-1.0.3.1.jar',
-   'couchbase-lite-java-listener-1.0.3.1.jar',
-   'jackson-core-asl-1.9.2.jar',
-   'jackson-mapper-asl-1.9.2.jar',
-   'rhino-1.7R3.jar',
-   'servlet-2-3.jar',
-   'stateless4j-2.4.0.jar',
-   'webserver-2-3.jar']
 end
 
 def config_couchmotion_for_ios(app)
   Dir.glob(File.join(File.dirname(__FILE__), 'ios/**/*.rb')).each do |file|
     app.files.unshift(file)
   end
+end
+
+
+namespace :maven do
+  task :install do
+    puts 'You must run: sh convert_jar.sh'
+    end
 end

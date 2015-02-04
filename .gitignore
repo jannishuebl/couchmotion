@@ -47,3 +47,5 @@ nbproject
 .idea
 .dat*.*
 *.bridgesupport
+
+android-test-app/vendor/Maven/

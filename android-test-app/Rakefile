@@ -1,14 +1,12 @@
+#encoding: utf-8
 #nd -*- coding: utf-8 -*-
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/android'
 
 begin
   require 'bundler'
-  if ENV['ENVIRONMENT'] == 'local'
     Bundler.require(:development)
-  else
     Bundler.require(:default)
-  end
 rescue LoadError
 end
 

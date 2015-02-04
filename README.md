@@ -14,25 +14,22 @@ rake spec:device files=init_android_couchdb_spec
 Runnig rake spec alone will lead to mistake.
 
 
-### Setup Rubymotion
-
-You must add some *.so files and other libs to the *.apk file. Therefor we must modify RubyMotion to add this files:
-
-```shell
-      cp ./RubyMotion/0001-add-suport-for-packing-raw-files-to-apk.patch /Library/RubyMotion/
-      cd /Library/RubyMotion
-      git apply --check 0001-add-suport-for-packing-raw-files-to-apk.patch
-If Everything is ok:
-      git apply 0001-add-suport-for-packing-raw-files-to-apk.patch
-```
-
 ### Add Gem to Project
 
 Add the dependence to the Gemfile of your Android project
 
+Maven must be installed, for details see: https://github.com/HipByte/motion-maven
+
 ```ruby
-gem 'couchmotion', :path => 'path/to/gem/root/', :group => :development
+gem 'couchmotion', :path => 'path/to/gem/root/'
+
+bundle install
+
+rake maven:install
 ```
+
+After maven:install you have do run convert_jar.sh from this gem. Copy it to the apps root.
+This is a workaround for: http://hipbyte.myjetbrains.com/youtrack/issue/RM-728
 
 In the MainActivity init couchdb with:
 
