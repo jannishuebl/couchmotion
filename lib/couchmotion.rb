@@ -42,9 +42,18 @@ def config_couchmotion_for_ios(app)
   end
 end
 
-
 namespace :maven do
   task :install do
-    puts 'You must run: sh convert_jar.sh'
+    jar_root = "#{Motion::Project::Maven::MAVEN_ROOT}/target"
+    `cd #{jar_root} && rm -rf unpack`
+    `cd #{jar_root} && mkdir unpack`
+    `cd #{jar_root} && cp dependencies.jar unpack`
+    `cd #{jar_root}/unpack && unzip -o dependencies.jar`
+    `cd #{jar_root}/unpack && unzip -o classes.jar`
+    `cd #{jar_root}/unpack && rm -rf classes.jar`
+    `cd #{jar_root}/unpack && rm -rf dependencies.jar`
+    `cd #{jar_root}/unpack && jar -cf dependencies.jar *`
+    `cd #{jar_root}/unpack && cp dependencies.jar ..`
+    `cd #{jar_root} && rm -rf unpack`
     end
 end

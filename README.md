@@ -1,43 +1,94 @@
-
-# Usage
+# Setup
 ## Android
+
+Add to your Gemfile:
+
+```ruby
+gem 'couchmotion', :git => 'git://github.com/jannishuebl/couchmotion.git'
+```
+
+```shell
+bundle install
+```
+
+Install Maven:  
+Maven must be installed, for details see: https://github.com/HipByte/motion-maven
+
+```shell
+brew install maven
+```
+
+Add Maven-repository:
+
+Add couchbase-repository to your ~/.m2/settings.xml: http://files.couchbase.com/maven2
+Create the ~/.m2/settings.xml if it does not exists.
+
+My settings.xml looks like:
+
+```xml
+<settings>
+  <profiles>
+    <profile>
+      <id>couchmotion</id>
+      <repositories>
+        <repository>
+          <id>couchbase</id>
+          <name>the repository for couchdb</name>
+          <url>http://files.couchbase.com/maven2</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>couchmotion</activeProfile>
+  </activeProfiles>
+</settings>
+```
+
+Install Mavendependencies:
+
+```shell
+rake maven:install
+```
+
+Setup database by adding following lines to ```onCreate```-Method of MainActivity:
+
+```ruby
+CouchDB.init_database 'Databasename', self.getApplicationContext
+```
+
+Example:
+
+```ruby
+class MainActivity < Android::App::Activity
+
+  def onCreate(savedInstanceState)
+    super savedInstanceState
+    CouchDB.init_database 'Databasename', self.getApplicationContext
+    true
+  end
+
+end
+```
+
+## Usage
+
+## Development
+
+Testing the project:
 
 For test purposes you can use the android app in the repository. (./android-test-app)
 
 Run tests with:
 
 ```
-rake spec:device files=android_couch_db_spec
-rake spec:device files=init_android_couchdb_spec
+rake spec
 ```
 
-Runnig rake spec alone will lead to mistake.
 
 
-### Add Gem to Project
 
-Add the dependence to the Gemfile of your Android project
-
-Maven must be installed, for details see: https://github.com/HipByte/motion-maven
-
-```ruby
-gem 'couchmotion', :path => 'path/to/gem/root/'
-
-bundle install
-
-rake maven:install
-```
-
-After maven:install you have do run convert_jar.sh from this gem. Copy it to the apps root.
-This is a workaround for: http://hipbyte.myjetbrains.com/youtrack/issue/RM-728
-
-In the MainActivity init couchdb with:
-
-```ruby
-CouchDB.init_database 'Databasename', self.getApplicationContext
-```
-
-## Development
 
 ## Goals
 
