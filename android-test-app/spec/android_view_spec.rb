@@ -1,39 +1,25 @@
-
-def reset_database
-  database = CouchDB::AndroidCouchDB.new 'test-db', self.main_activity.getApplicationContext
-  database.destroy
-  CouchDB::AndroidCouchDB.new 'test-db', self.main_activity.getApplicationContext
+def setup_database
+  database = reset_database
+  fill database
+  database
 end
 
 describe 'AndroidView' do
 
-  # @param [CouchDB::AndroidCouchDB] database
-  def fill(database)
-    doc = database.create_document
-    doc.put({string:'string1'})
-    doc2 = database.create_document
-    doc2.put({integer:123})
-    doc3 = database.create_document
-    doc3.put({float: 12.3})
-  end
-
   it 'should get a map block which gets all documents and a working emiter' do
-
-    database = reset_database
-
-    fill database
+    database = setup_database
 
     view = database.view_by 'test-view'
 
     mapped_documents = []
-    result = view.map do | document, emitter|
+    result = view.map do |document, emitter|
 
       document.class.inspect.should.equal 'AndroidDocument'
-      emitter.class.inspect.should.equal   'AndroidEmitter'
+      emitter.class.inspect.should.equal 'AndroidEmitter'
 
       mapped_documents << document
       if document.properties[:string]
-        emitter.emit  document.properties[:string], nil
+        emitter.emit document.properties[:string], nil
       end
     end
     result.should == false
@@ -49,24 +35,21 @@ describe 'AndroidView' do
   end
 
   it 'should get a map block and a reduce block which gets, keys, values and rereduce' do
-
-    database = reset_database
-
-    fill database
+    database = setup_database
 
     view = database.view_by 'test-view'
 
     mapped_documents = []
-    view.map do | document, emitter|
+    view.map do |document, emitter|
 
       document.class.inspect.should.equal 'AndroidDocument'
-      emitter.class.inspect.should.equal   'AndroidEmitter'
+      emitter.class.inspect.should.equal 'AndroidEmitter'
 
       mapped_documents << document
       if document.properties[:string]
-        emitter.emit  document.properties[:string], 'value1'
-        emitter.emit  document.properties[:string], nil
-        emitter.emit  document.properties[:string], nil
+        emitter.emit document.properties[:string], 'value1'
+        emitter.emit document.properties[:string], nil
+        emitter.emit document.properties[:string], nil
       end
     end
 
@@ -99,4 +82,20 @@ describe 'AndroidView' do
   def property_should_be(actual, clazz, expected)
   end
 
+end
+
+def reset_database
+  database = CouchDB::AndroidCouchDB.new 'test-db', self.main_activity.getApplicationContext
+  database.destroy
+  CouchDB::AndroidCouchDB.new 'test-db', self.main_activity.getApplicationContext
+end
+
+# @param [CouchDB::AndroidCouchDB] database
+def fill(database)
+  doc = database.create_document
+  doc.put({string: 'string1'})
+  doc2 = database.create_document
+  doc2.put({integer: 123})
+  doc3 = database.create_document
+  doc3.put({float: 12.3})
 end

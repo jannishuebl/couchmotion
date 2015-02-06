@@ -1,5 +1,9 @@
 class CouchDB
 
+  def self.close
+    self.instance_internal.close
+  end
+
   def self.instance_internal
     return @instance if @instance
     @instance = CouchDB.new

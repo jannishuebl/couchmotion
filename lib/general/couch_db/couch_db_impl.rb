@@ -4,6 +4,11 @@ class CouchDB
     @couchdb = couchdb
   end
 
+  def close
+    couchdb.close
+    @couchdb = nil
+  end
+
   # @param [DBView] view
   def addView(view)
     db_view = couchdb.view_by view.class.name

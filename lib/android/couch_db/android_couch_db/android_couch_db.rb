@@ -26,6 +26,10 @@ class CouchDB
       CouchDB::View::AndroidView.new view
     end
 
+    def close
+      database.getManager.close
+    end
+
     def destroy
       database.delete
     end
