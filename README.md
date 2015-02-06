@@ -1,9 +1,14 @@
-# Setup
-## IOS
+Couchmotion (Still in construction)
+============
+
+A gem for integration [couchbase-lite-android](https://github.com/couchbase/couchbase-lite-android) and [couchbase-lite-ios](https://github.com/couchbase/couchbase-lite-ios) into a RubyMotion application.
+
+## Setup
+### IOS
 
 Still in construction
 
-## Android
+### Android
 
 Add to your Gemfile:
 
