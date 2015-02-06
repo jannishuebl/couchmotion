@@ -21,13 +21,13 @@ bundle install
 ```
 
 Install Maven:  
-Maven must be installed, for details see: https://github.com/HipByte/motion-maven
+Maven has to be installed, for details see: https://github.com/HipByte/motion-maven
 
 ```shell
 brew install maven
 ```
 
-Add Maven-repository:
+Add maven-repository:
 
 Add couchbase-repository to your ~/.m2/settings.xml: http://files.couchbase.com/maven2
 Create the ~/.m2/settings.xml if it does not exists.
@@ -55,13 +55,13 @@ My settings.xml looks like:
 </settings>
 ```
 
-Install Mavendependencies:
+Install maven-dependencies:
 
 ```shell
 rake maven:install
 ```
 
-Setup database by adding following lines to ```onCreate```-Method of MainActivity:
+Setup database by adding following lines to ```onCreate```-method of MainActivity:
 
 ```ruby
 CouchDB.open 'Databasename', self.getApplicationContext
@@ -85,7 +85,7 @@ end
 
 ### Open/Create Database
 
-Please refer to usage guide for opening a couchdb on android and ios this is the onlything that should be different on the plattforms.
+Please refer to usage guide for opening a couchdb on Android and IOS. This is the only thing that should be different on the plattforms.
 
 ### Create a Document
 
@@ -122,7 +122,7 @@ Please refer to usage guide for opening a couchdb on android and ios this is the
 
 ### Working with Views, Querys and Enumerator
 
-#### Database contains following Documents:
+#### Given database contains following documents:
 
 ```ruby
   {string: 'string1', document: 1}
@@ -180,7 +180,7 @@ Please refer to usage guide for opening a couchdb on android and ios this is the
   end
 ```
 
-For now you can only search for keys, start and endkey for example are not implemented yet, you are welcome to do this ;)
+For now you can only search for keys. For example start- and endkey are not implemented yet, you are welcome to do this ;)
 
 #### Define a View with reduce block:
 
@@ -212,11 +212,11 @@ For now you can only search for keys, start and endkey for example are not imple
 
 ## Goals
 
-First goal is to build a uniform API for Android and IOS therefor all Direct API calls are Wrapped. 
+First goal is to build a uniform API for Android and IOS therefor all Direct API calls are wrapped. 
 The Wrapper must ensure that the interface of the Android couchdb and IOS couchdb are uniform.
 
 After this is reached couchmotion wants to give the possibility to store OpenStructs and fetch them again.
-So that it can be used as the database layer of a rubymotion application plattform independent.
+So its can be used as the database layer of a rubymotion application plattform independently.
 
 Example:
 
@@ -236,11 +236,11 @@ item = Item.find_by(id)
 
 ### Projectstructure
 
-For testing the Android Api there is a test project in /android-test-app and there will be one for IOS in /ios-test-app.
-All tests for the Wrappers around the nativ couchdb api should be placed in /android-test-app/spec or /ios-test-app/spec.
+For testing the Android API there is a test project in /android-test-app and there will be one for IOS in /ios-test-app.
+All tests for the Wrappers around the nativ couchbase-API should be placed in /android-test-app/spec or /ios-test-app/spec.
 
 For details see https://github.com/jannishuebl/couchmotion/tree/master/android-test-app
 
-All other tests that are not accessing the nativ api and are using the wrappers around it should be taken to /spec folder.
-A Mock Wrapper will be added for testing purposes.
+All other tests that are not accessing the nativ API and are using the Wrappers around it should be taken to the /spec folder.  
 
+A Mock Wrapper will be added for testing purposes.  
