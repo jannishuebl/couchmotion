@@ -1,4 +1,8 @@
 # Setup
+## IOS
+
+Still in construction
+
 ## Android
 
 Add to your Gemfile:
@@ -201,20 +205,6 @@ For now you can only search for keys, start and endkey for example are not imple
 
 ## Development
 
-Testing the project:
-
-For test purposes you can use the android app in the repository. (./android-test-app)
-
-Run tests with:
-
-```
-rake spec
-```
-
-
-
-
-
 ## Goals
 
 First goal is to build a uniform API for Android and IOS therefor all Direct API calls are Wrapped. 
@@ -244,7 +234,8 @@ item = Item.find_by(id)
 For testing the Android Api there is a test project in /android-test-app and there will be one for IOS in /ios-test-app.
 All tests for the Wrappers around the nativ couchdb api should be placed in /android-test-app/spec or /ios-test-app/spec.
 
+For details see https://github.com/jannishuebl/couchmotion/tree/master/android-test-app
+
 All other tests that are not accessing the nativ api and are using the wrappers around it should be taken to /spec folder.
 A Mock Wrapper will be added for testing purposes.
-
 

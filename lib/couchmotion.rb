@@ -30,8 +30,8 @@ def config_couchmotion_for_android(app)
 
   vendor_dir = File.join(File.dirname(__FILE__), '../vendor')
   libs = []
-  libs << "#{vendor_dir}/raw_files/lib/armeabi/libcom_couchbase_touchdb_RevCollator.so"
-  libs << "#{vendor_dir}/raw_files/lib/armeabi/libcom_couchbase_touchdb_TDCollateJSON.so"
+  libs << "#{vendor_dir}/native_libs/lib/armeabi/libcom_couchbase_touchdb_RevCollator.so"
+  libs << "#{vendor_dir}/native_libs/lib/armeabi/libcom_couchbase_touchdb_TDCollateJSON.so"
 
   app.vendor_project :jar => "#{vendor_dir}/cbl_collator_so-1.0.3.1.jar", :native => libs
 end
