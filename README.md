@@ -55,7 +55,7 @@ rake maven:install
 Setup database by adding following lines to ```onCreate```-Method of MainActivity:
 
 ```ruby
-CouchDB.init_database 'Databasename', self.getApplicationContext
+CouchDB.open 'Databasename', self.getApplicationContext
 ```
 
 Example:
@@ -65,7 +65,7 @@ class MainActivity < Android::App::Activity
 
   def onCreate(savedInstanceState)
     super savedInstanceState
-    CouchDB.init_database 'Databasename', self.getApplicationContext
+    CouchDB.open 'Databasename', self.getApplicationContext
     true
   end
 
@@ -73,6 +73,131 @@ end
 ```
 
 ## Usage
+
+### Open/Create Database
+
+Please refer to usage guide for opening a couchdb on android and ios this is the onlything that should be different on the plattforms.
+
+### Create a Document
+
+```ruby
+  document = CouchDB.create_document
+```
+
+### Get a Document by id
+```ruby
+  document = CouchDB.document_by('your-id')
+```
+
+### Working with Documents
+
+```ruby
+>>document = CouchDB.create_document
+=> #<AndroidDocument:0x31d00025>
+  # add properties by hash and save the Document
+>>document.put({name:'value of property :name of the Document..'})
+=> "effb030a-a483-40e8-bc42-bac9abfa80c8"
+
+>>document = CouchDB.document_by("effb030a-a483-40e8-bc42-bac9abfa80c8")
+  
+  # get property by key (must be a Symbol)
+>>id = document.property_for(:_id)
+=> "effb030a-a483-40e8-bc42-bac9abfa80c8" 
+>>name = document.property_for(:name)
+=> "value of property :name of the Document.."
+
+  # get a hash of all properties
+>>properties_as_hash = document.properties
+=> {:_id=>"effb030a-a483-40e8-bc42-bac9abfa80c8", :_rev=>"1-aa795a38d952089aea79ea82fb618d39", :name=>"value of property :name of the Document.."}
+```
+
+### Working with Views, Querys and Enumerator
+
+#### Database contains following Documents:
+
+```ruby
+  {string: 'string1', document: 1}
+  {string: 'string2', document: 2}
+  {string: 'string1', document: 3}
+  {string: 'string3', document: 4}
+  {integer: 123, document: 5}
+  {integer: 123, document: 6}
+  {integer: 321, document: 7}
+  {integer: 987, document: 8}
+  {float: 12.3, document: 9}
+  {float: 12.3, document: 10}
+  {float: 3.21, document: 11}
+  {float: 9.87, document: 12}
+```
+
+#### Define a View without reduce block:
+
+```ruby
+  view = CouchDB.view_by 'test-view'
+
+  view.map do |document, emitter|
+
+    if document.property_for(:string)
+      emitter.emit document.property_for(:string), nil
+    end
+  end
+  view.version 1
+```
+#### Create a Query and add searchkeys
+```ruby
+  view = database.view_by 'test-view'
+
+  query = view.create_query
+  
+  query.with_key = 'string1'
+
+  enumerator = query.execute
+  enumerator.map do | key, document |
+    # will be :
+    # {string: 'string1', document: 1}
+    # {string: 'string1', document: 3}
+  end
+
+  query = view.create_query
+  
+  query.with_keys = ['string1', 'string2']
+
+  enumerator = query.execute
+  enumerator.map do | key, document |
+    # will be :
+    # {string: 'string1', document: 1}
+    # {string: 'string2', document: 2}
+    # {string: 'string1', document: 3}
+  end
+```
+
+For now you can only search for keys, start and endkey for example are not implemented yet, you are welcome to do this ;)
+
+#### Define a View with reduce block:
+
+```ruby
+  view = database.view_by 'test-view'
+
+  view.map do |document, emitter|
+
+    if document.property_for(:integer)
+      emitter.emit document.property_for(:integer), nil
+    end
+  end
+
+  view.reduce do |keys, values, rereduce|
+      # e.g. do summing up somthing
+      reduce_value = 0
+      keys.each { |x| reduce_value = reduce_value + x}
+      reduce_value
+    end
+  view.version 1
+
+  enumerator = view.create_query.execute
+  # should be 1554 ;)
+  puts enumerator.reduce_value
+  
+```
 
 ## Development
 

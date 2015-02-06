@@ -4,6 +4,18 @@ class CouchDB
     self.instance_internal.close
   end
 
+  def self.create_document
+    self.instance_internal.create_document
+  end
+
+  def self.document_by
+    self.instance_internal.document_by
+  end
+
+  def self.view_by(name)
+    self.instance_internal.view_by name
+  end
+
   def self.instance_internal
     return @instance if @instance
     @instance = CouchDB.new

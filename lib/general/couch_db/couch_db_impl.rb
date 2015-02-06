@@ -4,6 +4,17 @@ class CouchDB
     @couchdb = couchdb
   end
 
+  def create_document
+    couchdb.create_document
+  end
+
+  def document_by
+    couchdb.document_by
+  end
+
+  def view_by(name)
+    couchdb.view_by(name)
+  end
   def close
     couchdb.close
     @couchdb = nil
