@@ -3,12 +3,9 @@ unless defined?(Motion::Project::Config)
 end
 
 require 'rubygems'
-require 'motion-maven'
 
 Motion::Project::App.setup do |app|
-
-
-  if Motion::Project.constants.include? :IOSConfig && app.class.to_s == "Motion::Project::IOSConfig"
+  if Motion::Project.constants.include? :IOSConfig 
     config_couchmotion_for_ios app
   end
   if Motion::Project.constants.include? :AndroidConfig
@@ -20,6 +17,7 @@ Motion::Project::App.setup do |app|
 end
 
 def config_couchmotion_for_android(app)
+  require 'motion-maven'
   Dir.glob(File.join(File.dirname(__FILE__), 'android/**/*.rb')).each do |file|
     app.files.unshift(file)
   end
@@ -37,8 +35,12 @@ def config_couchmotion_for_android(app)
 end
 
 def config_couchmotion_for_ios(app)
+  require 'motion-cocoapods'
   Dir.glob(File.join(File.dirname(__FILE__), 'ios/**/*.rb')).each do |file|
     app.files.unshift(file)
+  end
+  app.pods do
+    pod 'couchbase-lite-ios' ,'~> 1.0.3.1'
   end
 end
 

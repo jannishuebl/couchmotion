@@ -30,7 +30,7 @@ describe 'AndroidCouchDB' do
     document = database.create_document
 
     expect(document).to be_kind_of CouchDbFacade::Document::AndroidDocument
-    expect(document.instance_variable_get(:@android_document)).to eq(db_document)
+    expect(document.instance_variable_get(:@ios_document)).to eq(db_document)
   end
 
   it 'can return a DatabaseView by name' do
@@ -68,7 +68,7 @@ describe 'AndroidCouchDB' do
     document = database.document_with document_id
 
     expect(document).to be_kind_of CouchDbFacade::Document::AndroidDocument
-    expect(document.instance_variable_get(:@android_document)).to eq(db_document)
+    expect(document.instance_variable_get(:@ios_document)).to eq(db_document)
 
   end
 end

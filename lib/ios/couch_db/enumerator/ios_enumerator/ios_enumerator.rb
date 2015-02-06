@@ -1,0 +1,27 @@
+class CouchDB
+  class Enumerator
+    class IOSEnumerator
+
+      def initialize(android_enumerator)
+        @android_enumerator = android_enumerator
+      end
+
+      def reduce_value
+        row = @android_enumerator.getRow(0)
+        ConvertBetweenMotionAndJava.to_motion row.getValue
+      end
+
+      def map(&block)
+        rows = []
+        for index in 0..(@android_enumerator.getCount() - 1)
+          row = @android_enumerator.getRow(index)
+          document = row.getDocument
+          key = ConvertBetweenMotionAndJava.to_motion row.getKey
+          rows <<  block.call(key, CouchDB::Document::AndroidDocument.new(document))
+        end
+        rows
+      end
+
+    end
+  end
+end

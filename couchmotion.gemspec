@@ -16,4 +16,5 @@ Gem::Specification.new do |s|
 
 # Dependencies
   s.add_dependency "motion-maven"
+  s.add_dependency "motion-cocoapods"
 end

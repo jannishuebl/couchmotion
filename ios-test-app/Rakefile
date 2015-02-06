@@ -4,6 +4,7 @@ require 'motion/project/template/ios'
 
 begin
   require 'bundler'
+  Bundler.require(:development)
   Bundler.require
 rescue LoadError
 end

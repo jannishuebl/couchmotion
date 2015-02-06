@@ -1,3 +1,0 @@
-class DatabaseNotOpen < StandardError
-
-end

@@ -1,6 +1,6 @@
 class CouchDB
   class Query
-    class AndroidQuery
+    class IOSQuery
 
       def initialize(android_query)
         @android_query = android_query
