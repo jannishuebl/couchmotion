@@ -34,4 +34,10 @@ class ConvertBetweenMotionAndJava
     Java::Lang::String
   end
 
+  def self.to_java_array(values)
+    values.map do |value|
+      self.to_java value
+    end
+  end
+
 end
