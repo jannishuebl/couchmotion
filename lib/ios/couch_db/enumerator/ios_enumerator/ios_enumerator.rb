@@ -7,17 +7,17 @@ class CouchDB
       end
 
       def reduce_value
-        row = @android_enumerator.getRow(0)
-        ConvertBetweenMotionAndJava.to_motion row.getValue
+        row = @android_enumerator.rowAtIndex(0)
+        row.value
       end
 
       def map(&block)
         rows = []
-        for index in 0..(@android_enumerator.getCount() - 1)
-          row = @android_enumerator.getRow(index)
-          document = row.getDocument
-          key = ConvertBetweenMotionAndJava.to_motion row.getKey
-          rows <<  block.call(key, CouchDB::Document::AndroidDocument.new(document))
+        for index in 0..(@android_enumerator.count - 1)
+          row = @android_enumerator.rowAtIndex(index)
+          document = row.document
+          key = row.key
+          rows <<  block.call(key, CouchDB::Document::IOSDocument.new(document))
         end
         rows
       end

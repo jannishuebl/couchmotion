@@ -2,18 +2,18 @@ class CouchDB
   class View
     class IOSView
 
-      def initialize(android_view)
-        @android_view = android_view
+      def initialize(ios_view)
+        @ios_view = ios_view
         @reduce = nil
       end
 
       def map(&block)
-        @map = Mapper.new block
+        @map = block
         save
       end
 
       def reduce(&block)
-        @reduce = Reducer.new block
+        @reduce = block
         save
       end
 
@@ -24,56 +24,28 @@ class CouchDB
 
       def save
         if @map && @version
-          return @android_view.setMapReduce(@map, @reduce, @version)
+          map = Proc.new do |document, emitter|
+            @map.call CouchDB::Document::IOSDocument.new(FakeDocument.new(document)), IOSEmitter.new(emitter)
+
+          end
+          return @ios_view.setMapBlock(map, reduceBlock: @reduce, version: @version)
         end
         false
       end
 
       def create_query
-        CouchDB::Query::AndroidQuery.new @android_view.createQuery
+        CouchDB::Query::IOSQuery.new @ios_view.createQuery
       end
 
-      class Mapper
-
-        def initialize(block)
-          @block = block
-        end
-
-        def map(document_hash, emitter)
-          document = CouchDB::Document::AndroidDocument.new(FakeDocument.new(document_hash))
-          @block.call(document, AndroidEmitter.new(emitter))
-        end
-      end
-
-      class Reducer
-        def initialize(block)
-          @block = block
-        end
-
-        def reduce(keys, values, rereduce)
-          keys.map! do |key|
-            ConvertBetweenMotionAndJava.to_motion key
-          end
-          values.map! do |value|
-            ConvertBetweenMotionAndJava.to_motion value
-          end
-          reduce_value = @block.call(keys, values, rereduce)
-          ConvertBetweenMotionAndJava.to_java reduce_value
-        end
-      end
-
-      class AndroidEmitter
+      class IOSEmitter
         def initialize(emitter)
           @emitter = emitter
         end
 
         def emit(key, value)
-          key = ConvertBetweenMotionAndJava.to_java(key)
-          value = ConvertBetweenMotionAndJava.to_java(value)
-          @emitter.emit(key, value)
+          @emitter.call(key, value)
         end
       end
-
       class FakeDocument
         def initialize(properties)
           @properties = properties
@@ -83,14 +55,15 @@ class CouchDB
           # This class is readable only
         end
 
-        def getProperty(key)
+        def propertyForKey(key)
           @properties[key]
         end
 
-        def getProperties
+        def properties
           @properties
         end
       end
+
     end
   end
 end

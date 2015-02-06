@@ -49,7 +49,7 @@ describe 'AndroidCouchDB' do
 
 
     expect(view).to be_kind_of CouchDbFacade::View::AndroidView
-    expect(view.instance_variable_get(:@android_view)).to eq(db_view)
+    expect(view.instance_variable_get(:@ios_view)).to eq(db_view)
 
   end
 
