@@ -1,6 +1,6 @@
 class CouchDB
   class Document
-    class IOSDocument
+    class AndroidDocument
 
     def initialize(android_document)
       @android_document = android_document

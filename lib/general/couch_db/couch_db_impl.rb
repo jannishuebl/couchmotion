@@ -16,7 +16,6 @@ class CouchDB
     couchdb.view_by(name)
   end
   def close
-    couchdb.close
     @couchdb = nil
   end
 

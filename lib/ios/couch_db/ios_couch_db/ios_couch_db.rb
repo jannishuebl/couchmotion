@@ -20,10 +20,6 @@ class CouchDB
       CouchDB::View::IOSView.new view
     end
 
-    def close
-      database.getManager.close
-    end
-
     def destroy
       error_ptr = Pointer.new(:object)
       database.deleteDatabase error_ptr
