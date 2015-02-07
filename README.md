@@ -1,4 +1,4 @@
-Couchmotion (Still in construction)
+Couchmotion 
 ============
 
 A gem for integration [couchbase-lite-android](https://github.com/couchbase/couchbase-lite-android) and [couchbase-lite-ios](https://github.com/couchbase/couchbase-lite-ios) into a RubyMotion application.
@@ -27,7 +27,7 @@ Install pods:
 rake pod:install
 ```
 
-Setup database by adding following lines to your startup-code of your app:
+Setup database by adding following line to your startup-code of your app:
 
 ```ruby
 CouchDB.open 'Databasename'
