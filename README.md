@@ -6,7 +6,32 @@ A gem for integration [couchbase-lite-android](https://github.com/couchbase/couc
 ## Setup
 ### IOS
 
-Still in construction
+Add to your Gemfile:
+```ruby
+gem 'couchmotion', :git => 'git://github.com/jannishuebl/couchmotion.git'
+```
+
+```shell
+bundle install
+```
+
+Setup motion-cocoapods:
+
+```shell
+pod setup
+```
+
+Install pods:
+
+```shell
+rake pod:install
+```
+
+Setup database by adding following lines to your startup-code of your app:
+
+```ruby
+CouchDB.open 'Databasename'
+```
 
 ### Android
 
