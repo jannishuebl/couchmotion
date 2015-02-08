@@ -235,6 +235,24 @@ For now you can only search for keys. For example start- and endkey are not impl
 
 ## Development
 
+### Double CouchDB
+
+There is a Double Database for testing the database logic without a device.
+
+In your spec file require double_db:
+
+```ruby
+require_relative '../lib/double/double_db'
+```
+
+Setup the Database with:
+
+```ruby
+CouchDB.open
+```
+
+Use it as a normal implementation.
+
 ## Goals
 
 First goal is to build a uniform API for Android and IOS therefor all Direct API calls are wrapped. 
