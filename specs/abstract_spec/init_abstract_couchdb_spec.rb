@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe 'CouchDB' do
+shared 'init' do
 
   it 'should open and create a Double CouchDB implementation and close it' do
 

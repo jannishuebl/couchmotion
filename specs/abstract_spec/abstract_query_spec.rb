@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe 'DoubleQuery' do
+describe 'AbstractQuery' do
 
   it 'should select documents by string keys and return a enumerator' do
 

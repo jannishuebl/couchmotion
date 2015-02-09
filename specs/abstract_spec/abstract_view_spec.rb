@@ -1,12 +1,10 @@
-require 'spec_helper'
-
 def setup_database
   database = reset_database
   fill database
   database
 end
 
-describe 'DoubleView' do
+shared 'AbstractView' do
 
   it 'should get a map block which gets all documents and a working emiter' do
     database = setup_database

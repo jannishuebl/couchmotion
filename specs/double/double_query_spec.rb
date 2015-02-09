@@ -1,4 +1,6 @@
-describe 'IOSQuery' do
+require 'helpers/spec_helper'
+
+describe 'DoubleQuery' do
 
   it 'should select documents by string keys and return a enumerator' do
 
@@ -58,9 +60,9 @@ describe 'IOSQuery' do
 end
 
 def reset_database
-  database = CouchDB::IOSCouchDB.new 'test-db'
+  database = CouchDB::DoubleCouchDB.new
   database.destroy
-  CouchDB::IOSCouchDB.new 'test-db'
+  CouchDB::DoubleCouchDB.new
 end
 
 def setup_query_with_view_for_property(property)
@@ -96,12 +98,12 @@ end
 
 
 def test_arrays_are_equal(actual, expected)
-  actual.size.should.equal expected.size
+  expect(actual.size).to eq expected.size
   expected.each do |x|
     unless actual.include? x
       puts "Actual:#{actual} does not contain: #{expected}"
     end
-    actual.include?(x).should == true
+    expect(actual.include?(x)).to be true
   end
 end
 

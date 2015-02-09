@@ -1,10 +1,12 @@
+require 'helpers/spec_helper'
+
 def setup_database
   database = reset_database
   fill database
   database
 end
 
-describe 'IOSView' do
+describe 'DoubleView' do
 
   it 'should get a map block which gets all documents and a working emiter' do
     database = setup_database
@@ -13,22 +15,23 @@ describe 'IOSView' do
 
     mapped_documents = []
     result = view.map do |document, emitter|
-      document.should.kind_of CouchDB::Document::IOSDocument
-      emitter.should.kind_of CouchDB::View::IOSView::IOSEmitter
+      expect(document).to be_kind_of CouchDB::Document::DoubleDocument
+      expect(emitter).to be_kind_of CouchDB::View::DoubleView
 
       mapped_documents << document
       if document.properties[:string]
         emitter.emit document.properties[:string], nil
       end
     end
-    result.should == false
+    expect(result).to be false
 
     result = view.version 1
-    result.should == true
+    expect(result).to be true
+
 
     view.create_query.execute
 
-    mapped_documents.size.should == 3
+    expect(mapped_documents.size).to eq 3
 
     database.destroy
   end
@@ -41,8 +44,8 @@ describe 'IOSView' do
     mapped_documents = []
     view.map do |document, emitter|
 
-      document.should.kind_of CouchDB::Document::IOSDocument
-      emitter.should.kind_of CouchDB::View::IOSView::IOSEmitter
+      expect(document).to be_kind_of CouchDB::Document::DoubleDocument
+      expect(emitter).to be_kind_of CouchDB::View::DoubleView
 
       mapped_documents << document
       if document.properties[:string]
@@ -57,7 +60,7 @@ describe 'IOSView' do
     actual_rereduce = -1
 
     view.reduce do |keys, values, rereduce|
-      keys.size.should == 3
+      expect(keys.size).to eq 3
       actual_values = values.include? 'value1'
       actual_keys = keys.include? 'string1'
       actual_rereduce = rereduce
@@ -70,10 +73,10 @@ describe 'IOSView' do
     enumerator = view.create_query.execute
     reduce_value = enumerator.reduce_value
 
-    reduce_value.should.equal 123
-    actual_keys.should == true
-    actual_values.should == true
-    actual_rereduce.should == false
+    expect(reduce_value).to eq 123
+    expect(actual_keys).to be true
+    expect(actual_values).to be true
+    expect(actual_rereduce).to be false
 
     database.destroy
   end
@@ -84,9 +87,9 @@ describe 'IOSView' do
 end
 
 def reset_database
-  database = CouchDB::IOSCouchDB.new 'test-db'
+  database = CouchDB::DoubleCouchDB.new
   database.destroy
-  CouchDB::IOSCouchDB.new 'test-db'
+  CouchDB::DoubleCouchDB.new
 end
 
 # @param [CouchDB::AndroidCouchDB] database
