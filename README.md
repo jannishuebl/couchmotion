@@ -242,7 +242,8 @@ to the ``./specs`` directory.
 
 There must be 4 kinds of tests:
 
-  1. AbstractTest: must be placed in the ```./abstract_specs/abstract_*classToTest*_spec.rb``` directory
+  #### AbstractTest: 
+must be placed in the ```./abstract_specs/abstract_*classToTest*_spec.rb``` directory
 
   In this spec-file the tests are implemented, all plattform dependent must be included 
   in methods. In the AbstractTest the methad must throw a NotImplementedError.
@@ -288,7 +289,8 @@ shared 'AbstractCouchDB' do
 end
 ```
 
-  2. AndroidTest: must be placed in the ```./android/android_*classToTest*_spec.rb``` directory
+#### AndroidTest:
+must be placed in the ```./android/android_*classToTest*_spec.rb``` directory
 
   In this spec-file the specifications for android are added.
   Sym-link the AbstractTest to ```./specs/android/abstract_specs:```
@@ -317,7 +319,8 @@ describe 'AndroidCouchDB' do
 end
 ```
 
-  3. iOSTest: must be placed in the ```./ios/ios_*classToTest*_spec.rb``` directory
+#### iOSTest: 
+must be placed in the ```./ios/ios_*classToTest*_spec.rb``` directory
 
   In this spec-file the specifications for ios are added.
   Sym-link the AbstractTest to ```./specs/ios/abstract_specs:```
@@ -346,7 +349,8 @@ describe 'IOSCouchDB' do
 
 end
 ```
-  3. DoubleTest: must be placed in the ```./double/double_*classToTest*_spec.rb``` directory
+#### DoubleTest: 
+must be placed in the ```./double/double_*classToTest*_spec.rb``` directory
 
   In this spec-file the specifications for the double are added.
   The AbstractTest are incuded with ```include_examples```-method
