@@ -5,7 +5,7 @@ shared 'AbstractCouchDB' do
 
     document = database.create_document
 
-    expect(document).to be_kind_of document_class
+    puts expect(document).to be_kind_of document_class
 
     database.destroy
   end
@@ -21,7 +21,7 @@ shared 'AbstractCouchDB' do
     new_document = database.document_with id
 
     expect(new_document).to be_kind_of document_class
-    expect(new_document.property_for(:name)).to be 123
+    expect(new_document.property_for(:name)).to eq 123
 
     database.destroy
   end
