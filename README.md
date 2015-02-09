@@ -244,11 +244,11 @@ There must be 4 kinds of tests:
 
   1. AbstractTest: must be placed in the ```./abstract_specs/abstract_*classToTest*_spec.rb``` directory
 
-      In this spec-file the tests are implemented, all plattform dependent must be included 
-      in methods. In the AbstractTest the methad must throw a NotImplementedError.
-      Instead of the ```describe``` method call the ```shared``` method.
+  In this spec-file the tests are implemented, all plattform dependent must be included 
+  in methods. In the AbstractTest the methad must throw a NotImplementedError.
+  Instead of the ```describe``` method call the ```shared``` method.
 
-      Example: 
+  Example: 
 
 ```ruby
 shared 'AbstractCouchDB' do
@@ -290,17 +290,17 @@ end
 
   2. AndroidTest: must be placed in the ```./android/android_*classToTest*_spec.rb``` directory
 
-      In this spec-file the specifications for android are added.
-      Sym-link the AbstractTest to ```./specs/android/abstract_specs:```
+  In this spec-file the specifications for android are added.
+  Sym-link the AbstractTest to ```./specs/android/abstract_specs:```
 
 ```
 cd specs/android/abstract_specs
 ln -s ../../abstract_specs/abstract_*classToTest*_spec.rb
 ```
-      The AbstractTest are incuded with ```behaves_like```-method
-      Overwrite the specification before including the AbstractTest!!!
+  The AbstractTest are incuded with ```behaves_like```-method
+  Overwrite the specification before including the AbstractTest!!!
 
-      Example: 
+  Example: 
 
 ```ruby
 describe 'AndroidCouchDB' do
@@ -319,17 +319,17 @@ end
 
   3. iOSTest: must be placed in the ```./ios/ios_*classToTest*_spec.rb``` directory
 
-      In this spec-file the specifications for ios are added.
-      Sym-link the AbstractTest to ```./specs/ios/abstract_specs:```
+  In this spec-file the specifications for ios are added.
+  Sym-link the AbstractTest to ```./specs/ios/abstract_specs:```
 
 ```
 cd specs/ios/abstract_specs
 ln -s ../../abstract_specs/abstract_*classToTest*_spec.rb
 ```
 
-      The AbstractTest are incuded with ```behaves_like```-method
+  The AbstractTest are incuded with ```behaves_like```-method
 
-      Example: 
+  Example: 
 
 ```ruby
 describe 'IOSCouchDB' do
@@ -348,12 +348,12 @@ end
 ```
   3. DoubleTest: must be placed in the ```./double/double_*classToTest*_spec.rb``` directory
 
-      In this spec-file the specifications for the double are added.
-      The AbstractTest are incuded with ```include_examples```-method
-      Do not forget to add the ```require 'helpers/spec_helper'``` statement.
-      Add the Abstract test to the spec helper(./spec/helpers/spec_helpers.rb) like all other tests.
+  In this spec-file the specifications for the double are added.
+  The AbstractTest are incuded with ```include_examples```-method
+  Do not forget to add the ```require 'helpers/spec_helper'``` statement.
+  Add the Abstract test to the spec helper(./spec/helpers/spec_helpers.rb) like all other tests.
 
-      Example: 
+  Example: 
 
 ```ruby
 require 'helpers/spec_helper'
