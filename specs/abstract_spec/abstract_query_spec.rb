@@ -1,4 +1,4 @@
-describe 'AbstractQuery' do
+shared 'AbstractQuery' do
 
   it 'should select documents by string keys and return a enumerator' do
 
@@ -55,79 +55,84 @@ describe 'AbstractQuery' do
     test_if_enumerator_contains_expected_documents(expected_documents, query)
   end
 
-end
 
-def reset_database
-  database = CouchDB::DoubleCouchDB.new
-  database.destroy
-  CouchDB::DoubleCouchDB.new
-end
+  def reset_database
+    database = set_up_database
+    database.destroy
+    set_up_database
+  end
 
-def setup_query_with_view_for_property(property)
-  database = reset_database
+  def setup_query_with_view_for_property(property)
+    database = reset_database
 
-  fill_for_query database
+    fill_for_query database
 
-  view = database.view_by 'test-view'
+    view = database.view_by 'test-view'
 
-  view.map do |document, emitter|
+    view.map do |document, emitter|
 
-    if document.properties[property]
-      emitter.emit document.properties[property], nil
+      if document.properties[property]
+        emitter.emit document.properties[property], nil
+      end
+    end
+    view.version 1
+
+
+    view.create_query
+  end
+
+
+  def test_if_enumerator_contains_expected_documents(expected_documents, query)
+    enumerator = query.execute
+
+    documents = []
+    enumerator.map do |key, document|
+      documents << document.property_for(:document)
+    end
+
+    test_arrays_are_equal(documents, expected_documents)
+  end
+
+
+  def test_arrays_are_equal(actual, expected)
+    expect(actual.size).to eq expected.size
+    expected.each do |x|
+      unless actual.include? x
+        puts "Actual:#{actual} does not contain: #{expected}"
+      end
+      expect(actual.include?(x)).to be true
     end
   end
-  view.version 1
 
-
-  view.create_query
-end
-
-
-def test_if_enumerator_contains_expected_documents(expected_documents, query)
-  enumerator = query.execute
-
-  documents = []
-  enumerator.map do |key, document|
-    documents << document.property_for(:document)
+  def fill_for_query(database)
+    doc = database.create_document
+    doc.put({string: 'string1', document: 1})
+    doc = database.create_document
+    doc.put({string: 'string2', document: 2})
+    doc = database.create_document
+    doc.put({string: 'string1', document: 3})
+    doc = database.create_document
+    doc.put({string: 'string3', document: 4})
+    doc2 = database.create_document
+    doc2.put({integer: 123, document: 5})
+    doc2 = database.create_document
+    doc2.put({integer: 123, document: 6})
+    doc2 = database.create_document
+    doc2.put({integer: 321, document: 7})
+    doc2 = database.create_document
+    doc2.put({integer: 987, document: 8})
+    doc3 = database.create_document
+    doc3.put({float: 12.3, document: 9})
+    doc3 = database.create_document
+    doc3.put({float: 12.3, document: 10})
+    doc3 = database.create_document
+    doc3.put({float: 3.21, document: 11})
+    doc3 = database.create_document
+    doc3.put({float: 9.87, document: 12})
   end
 
-  test_arrays_are_equal(documents, expected_documents)
-end
-
-
-def test_arrays_are_equal(actual, expected)
-  expect(actual.size).to eq expected.size
-  expected.each do |x|
-    unless actual.include? x
-      puts "Actual:#{actual} does not contain: #{expected}"
-    end
-    expect(actual.include?(x)).to be true
+  def set_up_database
+    raise NotImplementedError
   end
-end
 
-def fill_for_query(database)
-  doc = database.create_document
-  doc.put({string: 'string1', document: 1})
-  doc = database.create_document
-  doc.put({string: 'string2', document: 2})
-  doc = database.create_document
-  doc.put({string: 'string1', document: 3})
-  doc = database.create_document
-  doc.put({string: 'string3', document: 4})
-  doc2 = database.create_document
-  doc2.put({integer: 123, document: 5})
-  doc2 = database.create_document
-  doc2.put({integer: 123, document: 6})
-  doc2 = database.create_document
-  doc2.put({integer: 321, document: 7})
-  doc2 = database.create_document
-  doc2.put({integer: 987, document: 8})
-  doc3 = database.create_document
-  doc3.put({float: 12.3, document: 9})
-  doc3 = database.create_document
-  doc3.put({float: 12.3, document: 10})
-  doc3 = database.create_document
-  doc3.put({float: 3.21, document: 11})
-  doc3 = database.create_document
-  doc3.put({float: 9.87, document: 12})
 end
