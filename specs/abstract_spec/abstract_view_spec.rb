@@ -1,9 +1,3 @@
-def setup_database
-  database = reset_database
-  fill database
-  database
-end
-
 shared 'AbstractView' do
 
   it 'should get a map block which gets all documents and a working emiter' do
@@ -13,8 +7,8 @@ shared 'AbstractView' do
 
     mapped_documents = []
     result = view.map do |document, emitter|
-      expect(document).to be_kind_of CouchDB::Document::DoubleDocument
-      expect(emitter).to be_kind_of CouchDB::View::DoubleView
+      expect(document).to be_kind_of document_class
+      expect(emitter).to be_kind_of emitter_class
 
       mapped_documents << document
       if document.properties[:string]
@@ -34,6 +28,7 @@ shared 'AbstractView' do
     database.destroy
   end
 
+
   it 'should get a map block and a reduce block which gets, keys, values and rereduce' do
     database = setup_database
 
@@ -42,8 +37,8 @@ shared 'AbstractView' do
     mapped_documents = []
     view.map do |document, emitter|
 
-      expect(document).to be_kind_of CouchDB::Document::DoubleDocument
-      expect(emitter).to be_kind_of CouchDB::View::DoubleView
+      expect(document).to be_kind_of document_class
+      expect(emitter).to be_kind_of emitter_class
 
       mapped_documents << document
       if document.properties[:string]
@@ -82,20 +77,38 @@ shared 'AbstractView' do
   def property_should_be(actual, clazz, expected)
   end
 
-end
+  def setup_database
+    database = reset_database
+    fill database
+    database
+  end
 
-def reset_database
-  database = CouchDB::DoubleCouchDB.new
-  database.destroy
-  CouchDB::DoubleCouchDB.new
-end
+
+  def reset_database
+    database = set_up_database
+    database.destroy
+    set_up_database
+  end
+
+  def set_up_database
+    raise NotImplementedError
+  end
+
+  def document_class
+    raise NotImplementedError
+  end
+
+  def emitter_class
+    raise NotImplementedError
+  end
 
 # @param [CouchDB::AndroidCouchDB] database
-def fill(database)
-  doc = database.create_document
-  doc.put({string: 'string1'})
-  doc2 = database.create_document
-  doc2.put({integer: 123})
-  doc3 = database.create_document
-  doc3.put({float: 12.3})
+  def fill(database)
+    doc = database.create_document
+    doc.put({string: 'string1'})
+    doc2 = database.create_document
+    doc2.put({integer: 123})
+    doc3 = database.create_document
+    doc3.put({float: 12.3})
+  end
 end
