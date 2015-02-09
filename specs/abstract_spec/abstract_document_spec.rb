@@ -1,7 +1,7 @@
 shared 'AbstractDocument' do
 
   it 'should put properties to the document and stores them and return a id and return correct values again' do
-    database = CouchDB::DoubleCouchDB.new
+    database = set_up_database
 
     document = database.create_document
     id = document.put({string: 'string', integer: 123, float: 12.4})
@@ -21,4 +21,9 @@ shared 'AbstractDocument' do
     expect(document.property_for(:integer)).to eq 123
     expect(document.property_for(:float)).to eq 12.4
   end
+
+  def set_up_database
+    raise NotImplementedError
+  end
+
 end

@@ -1,0 +1,1 @@
+../../abstract_spec/abstract_document_spec.rb
