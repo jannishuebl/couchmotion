@@ -8,3 +8,6 @@ class NoMethodError < StandardError
   end
 
 end
+
+class NotImplementedError < StandardError
+end

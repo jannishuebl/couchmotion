@@ -1,0 +1,1 @@
+../../abstract_spec/init_abstract_couchdb_spec.rb

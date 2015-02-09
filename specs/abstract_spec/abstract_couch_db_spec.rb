@@ -5,7 +5,7 @@ shared 'AbstractCouchDB' do
 
     document = database.create_document
 
-    puts expect(document).to be_kind_of document_class
+    expect(document).to be_kind_of document_class
 
     database.destroy
   end
