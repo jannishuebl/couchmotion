@@ -235,6 +235,150 @@ For now you can only search for keys. For example start- and endkey are not impl
 
 ## Development
 
+### Testing Couchmotion API for Android, iOS and DoubleDB
+
+All tests that belong to Classes that are used in the API part of this gem should be put
+to the ``./specs`` directory. 
+
+There must be 4 kinds of tests:
+
+  #### AbstractTest: 
+must be placed in the ```./abstract_specs/abstract_*classToTest*_spec.rb``` directory
+
+  In this spec-file the tests are implemented, all plattform dependent must be included 
+  in methods. In the AbstractTest the methad must throw a NotImplementedError.
+  Instead of the ```describe``` method call the ```shared``` method.
+
+  Example: 
+
+```ruby
+shared 'AbstractCouchDB' do
+  it 'should create a new document' do
+    database = set_up_database
+
+    document = database.create_document
+
+    expect(document).to be_kind_of document_class
+
+    database.destroy
+  end
+
+  it 'should get a document by id' do
+    database = set_up_database
+
+    old_document = database.create_document
+    old_document.put({name:123})
+
+    id = old_document.property_for :_id
+
+    new_document = database.document_with id
+
+    expect(new_document).to be_kind_of document_class
+    expect(new_document.property_for(:name)).to eq 123
+
+    database.destroy
+  end
+
+  def set_up_database
+    raise NotImplementedError
+  end
+
+  def document_class
+    raise NotImplementedError
+  end
+end
+```
+
+#### AndroidTest:
+must be placed in the ```./android/android_*classToTest*_spec.rb``` directory
+
+  In this spec-file the specifications for android are added.
+  Sym-link the AbstractTest to ```./specs/android/abstract_specs:```
+
+```
+cd specs/android/abstract_specs
+ln -s ../../abstract_specs/abstract_*classToTest*_spec.rb
+```
+  The AbstractTest are incuded with ```behaves_like```-method
+  Overwrite the specification before including the AbstractTest!!!
+
+  Example: 
+
+```ruby
+describe 'AndroidCouchDB' do
+
+  def set_up_database
+    CouchDB::AndroidCouchDB.new 'test-db', self.main_activity.getApplicationContext
+  end
+
+  def document_class
+    CouchDB::Document::AndroidDocument
+  end
+
+  behaves_like 'AbstractCouchDB'
+end
+```
+
+#### iOSTest: 
+must be placed in the ```./ios/ios_*classToTest*_spec.rb``` directory
+
+  In this spec-file the specifications for ios are added.
+  Sym-link the AbstractTest to ```./specs/ios/abstract_specs:```
+
+```
+cd specs/ios/abstract_specs
+ln -s ../../abstract_specs/abstract_*classToTest*_spec.rb
+```
+
+  The AbstractTest are incuded with ```behaves_like```-method
+
+  Example: 
+
+```ruby
+describe 'IOSCouchDB' do
+
+  behaves_like 'AbstractCouchDB'
+
+  def set_up_database
+    CouchDB::IOSCouchDB.new 'test-database'
+  end
+
+  def document_class
+    CouchDB::Document::IOSDocument
+  end
+
+end
+```
+#### DoubleTest: 
+must be placed in the ```./double/double_*classToTest*_spec.rb``` directory
+
+  In this spec-file the specifications for the double are added.
+  The AbstractTest are incuded with ```include_examples```-method
+  Do not forget to add the ```require 'helpers/spec_helper'``` statement.
+  Add the Abstract test to the spec helper(./spec/helpers/spec_helpers.rb) like all other tests.
+
+  Example: 
+
+```ruby
+require 'helpers/spec_helper'
+
+describe 'DoubleCouchDB' do
+
+  include_examples 'AbstractCouchDB'
+
+  def set_up_database
+    CouchDB::DoubleCouchDB.new
+  end
+
+  def document_class
+    CouchDB::Document::DoubleDocument
+  end
+
+end
+```
+
+Please add all specs for all plattforms.
+
 ### Double CouchDB
 
 There is a Double Database for testing the database logic without a device.
