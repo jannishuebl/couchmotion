@@ -1,0 +1,18 @@
+language: objective-c
+cache: false
+before_install:
+  - (ruby --version)
+  - sudo chown -R travis ~/Library/RubyMotion
+  - mkdir -p ~/Library/RubyMotion/build
+  - sudo motion update
+install:
+  - sudo gem install rspec
+script:
+  - rspec
+  - cd ios-test-app
+  - bundle install
+  - pod setup > /dev/null
+  - rake pod:install
+  - rake spec iosversion=6.1
+  - rake spec iosversion=7.1
+  - rake spec iosversion=8.1
