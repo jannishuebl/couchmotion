@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jannishuebl/couchmotion.svg?branch=master)](https://travis-ci.org/jannishuebl/couchmotion)
+[![Code Climate](https://codeclimate.com/github/jannishuebl/couchmotion/badges/gpa.svg)](https://codeclimate.com/github/jannishuebl/couchmotion)
 Couchmotion 
 ============
 
