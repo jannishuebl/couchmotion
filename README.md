@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jannishuebl/couchmotion.svg?branch=master)](https://travis-ci.org/jannishuebl/couchmotion)
+[![Code Climate](https://codeclimate.com/github/jannishuebl/couchmotion/badges/gpa.svg)](https://codeclimate.com/github/jannishuebl/couchmotion)
 Couchmotion 
 ============
 
@@ -237,16 +239,16 @@ For now you can only search for keys. For example start- and endkey are not impl
 
 ### Testing Couchmotion API for Android, iOS and DoubleDB
 
-All tests that belong to Classes that are used in the API part of this gem should be put
+All tests that belong to Classes which are used in the API part of this gem should be put
 to the ``./specs`` directory. 
 
-There must be 4 kinds of tests:
+There should be 4 kinds of tests:
 
   #### AbstractTest: 
-must be placed in the ```./abstract_specs/abstract_*classToTest*_spec.rb``` directory
+should be placed in the ```./abstract_specs/abstract_*classToTest*_spec.rb``` directory
 
-  In this spec-file the tests are implemented, all plattform dependent must be included 
-  in methods. In the AbstractTest the methad must throw a NotImplementedError.
+  In this spec-file the tests are implemented, all plattform dependencies have to be included 
+  in methods. In the AbstractTest the method should throw a NotImplementedError.
   Instead of the ```describe``` method call the ```shared``` method.
 
   Example: 
@@ -290,7 +292,7 @@ end
 ```
 
 #### AndroidTest:
-must be placed in the ```./android/android_*classToTest*_spec.rb``` directory
+should be placed in the ```./android/android_*classToTest*_spec.rb``` directory
 
   In this spec-file the specifications for android are added.
   Sym-link the AbstractTest to ```./specs/android/abstract_specs:```
@@ -299,7 +301,7 @@ must be placed in the ```./android/android_*classToTest*_spec.rb``` directory
 cd specs/android/abstract_specs
 ln -s ../../abstract_specs/abstract_*classToTest*_spec.rb
 ```
-  The AbstractTest are incuded with ```behaves_like```-method
+  The AbstractTest is included with ```behaves_like```-method
   Overwrite the specification before including the AbstractTest!!!
 
   Example: 
@@ -320,9 +322,9 @@ end
 ```
 
 #### iOSTest: 
-must be placed in the ```./ios/ios_*classToTest*_spec.rb``` directory
+should be placed in the ```./ios/ios_*classToTest*_spec.rb``` directory
 
-  In this spec-file the specifications for ios are added.
+  In this spec-file the specifications for iOS are added.
   Sym-link the AbstractTest to ```./specs/ios/abstract_specs:```
 
 ```
@@ -330,7 +332,7 @@ cd specs/ios/abstract_specs
 ln -s ../../abstract_specs/abstract_*classToTest*_spec.rb
 ```
 
-  The AbstractTest are incuded with ```behaves_like```-method
+  The AbstractTest is incuded with ```behaves_like```-method
 
   Example: 
 
@@ -350,12 +352,12 @@ describe 'IOSCouchDB' do
 end
 ```
 #### DoubleTest: 
-must be placed in the ```./double/double_*classToTest*_spec.rb``` directory
+should be placed in the ```./double/double_*classToTest*_spec.rb``` directory
 
-  In this spec-file the specifications for the double are added.
-  The AbstractTest are incuded with ```include_examples```-method
-  Do not forget to add the ```require 'helpers/spec_helper'``` statement.
-  Add the Abstract test to the spec helper(./spec/helpers/spec_helpers.rb) like all other tests.
+  In this spec-file the specifications for the both are added.
+  The AbstractTest is incuded with ```include_examples```-method
+  Do not forget to add the ```require 'helpers/spec_helper'```-statement.
+  Add the AbstractTest to the spec helper(./spec/helpers/spec_helpers.rb) like all other tests.
 
   Example: 
 
@@ -383,7 +385,7 @@ Please add all specs for all plattforms.
 
 There is a Double Database for testing the database logic without a device.
 
-In your spec file require double_db:
+Your spec-file requires double_db:
 
 ```ruby
 require_relative '../lib/double/double_db'
@@ -399,8 +401,8 @@ Use it as a normal implementation.
 
 ## Goals
 
-First goal is to build a uniform API for Android and IOS therefor all Direct API calls are wrapped. 
-The Wrapper must ensure that the interface of the Android couchdb and IOS couchdb are uniform.
+First goal is to build a uniform API for Android and iOS therefor all Direct API calls are wrapped. 
+The Wrapper must ensure that the interface of the Android couchdb and iOS couchdb are uniform.
 
 After this is reached couchmotion wants to give the possibility to store OpenStructs and fetch them again.
 So its can be used as the database layer of a rubymotion application plattform independently.
@@ -423,11 +425,11 @@ item = Item.find_by(id)
 
 ### Projectstructure
 
-For testing the Android API there is a test project in /android-test-app and there will be one for IOS in /ios-test-app.
-All tests for the Wrappers around the nativ couchbase-API should be placed in /android-test-app/spec or /ios-test-app/spec.
+For testing the Android API there is a test project in /android-test-app and there will be one for iOS in /ios-test-app.
+All tests for the Wrappers around the native couchbase-API should be placed in /android-test-app/spec or /ios-test-app/spec.
 
 For details see https://github.com/jannishuebl/couchmotion/tree/master/android-test-app
 
-All other tests that are not accessing the nativ API and are using the Wrappers around it should be taken to the /spec folder.  
+All other tests that are not accessing the native API and are using the Wrappers around it should be taken to the /spec folder.  
 
 A Mock Wrapper will be added for testing purposes.  

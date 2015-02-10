@@ -12,4 +12,7 @@ end
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'ios-test-app'
+  if ENV['iosversion']
+    app.deployment_target = ENV['iosversion']
+  end
 end
