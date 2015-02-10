@@ -1,3 +1,5 @@
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 require 'rspec'
 def shared(desc, &block)
   RSpec.shared_examples desc, &block
