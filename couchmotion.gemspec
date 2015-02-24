@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
 
 # Dependencies
   s.add_dependency "motion-maven"
+  s.add_dependency "motion-require"
   s.add_dependency "motion-cocoapods"
   s.add_development_dependency "codeclimate-test-reporter"
 end

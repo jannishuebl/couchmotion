@@ -7,7 +7,7 @@ module CouchDB
     end
 
     def put(new_properties)
-      @properties.merge! new_properties
+      @properties.merge! Hash[new_properties.map{|(k,v)| [k.to_sym,v]}]
       property_for(:_id)
     end
 

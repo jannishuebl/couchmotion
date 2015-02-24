@@ -9,3 +9,5 @@ require_relative 'couch_db/manager/double_manager/double_manager'
 
 require_relative '../general/couch_db/couch_db_facade'
 require_relative '../general/couch_db/couch_db_impl'
+
+require_relative '../general/utils/couchstruct'

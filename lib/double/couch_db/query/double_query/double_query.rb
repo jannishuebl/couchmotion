@@ -10,7 +10,8 @@ module CouchDB
       end
 
       def execute
-        CouchDB::Enumerator::DoubleEnumerator.new @filtered_documents, @reduce_value
+        return CouchDB::Enumerator::DoubleEnumerator.new @filtered_documents, @reduce_value if @filtered_documents
+        CouchDB::Enumerator::DoubleEnumerator.new @rows, @reduce_value
       end
 
       def with_keys(keys)

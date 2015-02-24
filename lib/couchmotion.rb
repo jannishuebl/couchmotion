@@ -3,6 +3,10 @@ unless defined?(Motion::Project::Config)
 end
 
 require 'rubygems'
+require 'motion-require'
+
+Motion::Require.all( Dir.glob(File.join(File.dirname(__FILE__), 'general/**/*.rb')))
+Motion::Require.all( Dir.glob(File.join(File.dirname(__FILE__), 'ios/**/*.rb')))
 
 Motion::Project::App.setup do |app|
   if Motion::Project.constants.include? :IOSConfig 
@@ -11,16 +15,14 @@ Motion::Project::App.setup do |app|
   if Motion::Project.constants.include? :AndroidConfig
     config_couchmotion_for_android app
   end
-  Dir.glob(File.join(File.dirname(__FILE__), 'general/**/*.rb')).each do |file|
-    app.files.unshift(file)
-  end
 end
 
 def config_couchmotion_for_android(app)
   require 'motion-maven'
-  Dir.glob(File.join(File.dirname(__FILE__), 'android/**/*.rb')).each do |file|
-    app.files.unshift(file)
-  end
+  Motion::Require.all( Dir.glob(File.join(File.dirname(__FILE__), 'android/**/*.rb')))
+  # Dir.glob(File.join(File.dirname(__FILE__), 'android/**/*.rb')).each do |file|
+  #   app.files.unshift(file)
+  # end
 
   app.maven do 
     dependency 'com.couchbase.lite', :artifact => 'couchbase-lite-android', :version => '1.0.4', :type => 'aar'
@@ -36,9 +38,8 @@ end
 
 def config_couchmotion_for_ios(app)
   require 'motion-cocoapods'
-  Dir.glob(File.join(File.dirname(__FILE__), 'ios/**/*.rb')).each do |file|
-    app.files.unshift(file)
-  end
+  #   app.files.unshift(file)
+  # end
   app.pods do
     pod 'couchbase-lite-ios' ,'~> 1.0.3.1'
   end

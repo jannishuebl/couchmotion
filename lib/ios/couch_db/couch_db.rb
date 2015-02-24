@@ -14,9 +14,9 @@ module CouchDB
       @databases ||= Hash.new
       @databases[database_name] = database
       @default ||= database
+      create_views
       true
     end
   end
 
-  extend ClassMethods
 end

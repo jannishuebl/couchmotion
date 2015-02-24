@@ -35,6 +35,8 @@ module CouchDB
     end
 
     def destroy
+      @views = {}
+      @documents = {}
     end
 
   end

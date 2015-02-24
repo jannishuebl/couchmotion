@@ -35,7 +35,10 @@ module CouchDB
         @query_values = []
         @query_keys = []
 
+
         @double_database.documents.each do | key, document |
+
+
           @actual_document = document
           @map.call document, self
         end

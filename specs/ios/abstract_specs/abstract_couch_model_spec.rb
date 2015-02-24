@@ -1,0 +1,1 @@
+../../abstract_spec/abstract_couch_model_spec.rb

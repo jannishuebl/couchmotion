@@ -11,7 +11,7 @@ class CouchDB
       result = @ios_document.putProperties properties, error: error_ptr
       unless result
         error = error_ptr[0]
-        raise CouldNotAddPropertiesToDocument, "error code: #{error} for hash: #{hash}"
+        raise CouldNotAddPropertiesToDocument, "error code: #{error} for hash: #{properties}"
       end
       property_for '_id'
     end

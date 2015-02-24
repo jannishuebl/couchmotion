@@ -1,4 +1,4 @@
-class DBObject  < OpenStruct
+class DBObject
 
 
   def reduce

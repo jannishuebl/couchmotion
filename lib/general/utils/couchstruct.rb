@@ -1,4 +1,4 @@
-class OpenStruct
+class CouchStruct
   #
   # Creates a new OpenStruct object.  By default, the resulting OpenStruct
   # object will have no attributes.
@@ -23,6 +23,29 @@ class OpenStruct
   #     end
   #   end
   # end
+
+  def initialize(hash=nil)
+    @table = {}
+    if hash
+      hash.each_pair do |k, v|
+        k = k.to_sym.id2name
+        @table[k] = v
+        # if is_element_a_reference(v)
+        #   @table[k] = LazyReference.new(v[:_id])
+        # elsif is_element_a_collection(v)
+        #   @table[k] = LazyCollection.new(v[:_ids])
+        # end
+      end
+    end
+  end
+
+  def is_element_a_collection(v)
+    v.kind_of?(Hash) && v.has_key?(:_typ) && v[:_typ] == 'col'
+  end
+
+  def is_element_a_reference(v)
+    v.kind_of?(Hash) && v.has_key?(:_id) && v.has_key?(:_typ) && v[:_typ] == 'ref'
+  end
 
   # Duplicate an OpenStruct object members.
   def initialize_copy(orig)

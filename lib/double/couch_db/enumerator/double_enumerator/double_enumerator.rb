@@ -12,7 +12,7 @@ module CouchDB
       end
 
       def map(&block)
-        @rows.each do | row |
+        @rows.map do | row |
           key = row[:key]
           document = row[:document]
           block.call(key, document)
