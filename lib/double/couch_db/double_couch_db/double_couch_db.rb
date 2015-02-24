@@ -1,6 +1,6 @@
 require 'securerandom'
 
-class CouchDB
+module CouchDB
   class DoubleCouchDB
 
     def initialize

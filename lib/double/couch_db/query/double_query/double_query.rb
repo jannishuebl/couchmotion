@@ -1,4 +1,4 @@
-class CouchDB
+module CouchDB
   class Query
     class DoubleQuery
 
@@ -10,15 +10,15 @@ class CouchDB
       end
 
       def execute
-        CouchDB::Enumerator::DoubleEnumerator.new @filtered_doucuments, @reduce_value
+        CouchDB::Enumerator::DoubleEnumerator.new @filtered_documents, @reduce_value
       end
 
       def with_keys(keys)
-        @filtered_doucuments = []
+        @filtered_documents = []
         keys.each do |key|
           @rows.each do | row |
             if row[:key].eql? key
-              @filtered_doucuments << row
+              @filtered_documents << row
             end
           end
         end

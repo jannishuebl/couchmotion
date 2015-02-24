@@ -1,9 +1,17 @@
 describe 'CouchDB' do
 
-  behaves_like 'Initialize CouchDB'
+  behaves_like 'CouchDB'
 
-  def open_database
-    CouchDB.open 'test-db'
+  def open_manager
+    CouchDB.open_manager
+  end
+
+  def manager_class
+    CouchDB::Manager::IOSManager
+  end
+
+  def open_database(database_name)
+    CouchDB.open database_name
   end
 
   def database_class

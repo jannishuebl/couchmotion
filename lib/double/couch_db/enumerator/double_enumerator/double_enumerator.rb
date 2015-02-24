@@ -1,4 +1,4 @@
-class CouchDB
+module CouchDB
   class Enumerator
     class DoubleEnumerator
 
