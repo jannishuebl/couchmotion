@@ -11,6 +11,7 @@ module CouchDB
 
     def open(database_name)
       database = CouchDB::Database.new(database_name, IOSCouchDB.new(database_name))
+      @databases ||= Hash.new
       @databases[database_name] = database
       @default ||= database
       true
