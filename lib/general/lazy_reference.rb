@@ -14,6 +14,10 @@ class LazyCollection < Lazy
     @objs = objs
   end
 
+  def objs
+    @objs
+  end
+
   def real_object
     object_list = []
     @objs.each do |obj_hash|

@@ -66,10 +66,9 @@ shared 'AbstractCouchModel' do
 
     expect(db_model.to_h['col']).to be_kind_of(LazyCollection)
 
-    expect(db_model.col[0]._id).to eq(test_model_col1._id)
+    db_model.update
 
-    # expect(cols[0]).to eq({type: 'TestCouchModel', id: test_model_col1._id})
-    # expect(cols[1]).to eq({type: 'TestCouchModel', id: test_model_col2._id})
+    expect(db_model.col[0]._id).to eq(test_model_col1._id)
 
 
     CouchDB.destroy
@@ -127,5 +126,10 @@ end
 class TestCouchModel < CouchModel
 
   collection :col
+
+end
+class TestCouchModel2 < CouchModel
+
+  collection :col2
 
 end

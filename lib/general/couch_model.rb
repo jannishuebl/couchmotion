@@ -69,8 +69,8 @@ class CouchModel < CouchStruct
 
 end
 
-class TestCouchModel2 < CouchModel
-
-  collection :member
-
-end
+# class TestCouchModel2 < CouchModel
+#
+#   collection :member
+#
+# end

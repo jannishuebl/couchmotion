@@ -25,19 +25,22 @@ class CouchStruct
   # end
 
   def self.collection(field)
-
-    @@collections ||= []
-    @@collections << field
-
+    @collections ||= []
+    @collections << field
   end
 
+  def self.collections
+    @collections ||= []
+    @collections
+  end
+
+
   def initialize(hash={})
-    @@collections ||= []
     col_hash = {}
-    @@collections.each do |collection|
+    self.class.collections.each do |collection|
 
       if hash[collection]
-        col_hash[collection]  = LazyCollection.new(hash[collection])
+        col_hash[collection] = LazyCollection.new(hash[collection])
       else
         col_hash[collection] = []
       end
@@ -61,13 +64,17 @@ class CouchStruct
 
   def to_db_hash
     hash = to_h
-    @@collections.each do | collection|
+    self.class.collections.each do |collection|
 
-      hash[collection.to_s] = hash[collection.to_s].map do | item |
-        type = item.class.name
-        id = item._id
+      if hash[collection.to_s].kind_of? Lazy
+        hash[collection.to_s] = hash[collection.to_s].objs
+      else
+        hash[collection.to_s] = hash[collection.to_s].map do |item|
+          type = item.class.name
+          id = item._id
 
-        {type: type, id:id}
+          {type: type, id: id}
+        end
       end
     end
     hash
@@ -85,7 +92,7 @@ class CouchStruct
   def initialize_copy(orig)
     super
     @table = @table.dup
-    @table.each_key{|key| new_ostruct_member(key)}
+    @table.each_key { |key| new_ostruct_member(key) }
   end
 
   #
@@ -112,7 +119,7 @@ class CouchStruct
   #
   def each_pair
     return to_enum(__method__) { @table.size } unless block_given?
-    @table.each_pair{|p| yield p}
+    @table.each_pair { |p| yield p }
   end
 
   #
@@ -127,7 +134,7 @@ class CouchStruct
   #
   def marshal_load(x)
     @table = x
-    @table.each_key{|key| new_ostruct_member(key)}
+    @table.each_key { |key| new_ostruct_member(key) }
   end
 
   #
@@ -142,6 +149,7 @@ class CouchStruct
     end
     @table
   end
+
   protected :modifiable
 
 
@@ -157,6 +165,7 @@ class CouchStruct
     end
     name
   end
+
   protected :new_ostruct_member
 
   def method_missing(mid, *args) # :nodoc:
