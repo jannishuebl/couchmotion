@@ -24,6 +24,7 @@ class CouchModel < CouchStruct
 
   def self.all
     query = CouchDB.view_by(:all_for_type).create_query
+    query.with_keys self.name
     enumerator = query.execute
     enumerator.map do |key, document|
       self.new document.properties
