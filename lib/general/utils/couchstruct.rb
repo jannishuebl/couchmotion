@@ -189,7 +189,7 @@ class CouchStruct
   def get_table_element(id)
     element = table[id]
     if element.kind_of?(Lazy)
-      element = element.real_object
+      element = table[id] = element.real_object
     end
     element
   end
