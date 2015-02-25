@@ -1,4 +1,10 @@
 
+
+module Kernel
+  def motion_require(_)
+
+  end
+end
 require_relative 'couch_db/couch_db'
 require_relative 'couch_db/double_couch_db/double_couch_db'
 require_relative 'couch_db/document/double_document/double_document'
@@ -11,3 +17,4 @@ require_relative '../general/couch_db/couch_db_facade'
 require_relative '../general/couch_db/couch_db_impl'
 
 require_relative '../general/utils/couchstruct'
+require_relative '../general/couch_model'

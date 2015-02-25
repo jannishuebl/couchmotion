@@ -24,12 +24,13 @@ class CouchModel < CouchStruct
   end
 
   def self.inherited(subclass)
-    view_for_type :all_for_type, map: Proc.new { |doc, emitter| emitter.emit doc.property_for(:model_type), nil }, type: subclass
+    view_for_type :"all_for_#{subclass.name}", map: Proc.new { |doc, emitter| emitter.emit doc.property_for(:model_type), nil}, type: subclass
   end
 
 
   def self.all
-    query = CouchDB.view_by(:all_for_type).create_query
+    query = CouchDB.view_by(:"all_for_#{self.name}").create_query
+    query.with_key self.name
     enumerator = query.execute
     enumerator.map do |key, document|
       self.new document.properties

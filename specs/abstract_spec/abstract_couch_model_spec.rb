@@ -52,10 +52,22 @@ shared 'AbstractCouchModel' do
 end
 
 def insert_test_models
+  other_models.each do | model|
+    model.save
+  end
   all_models.map do | model |
     model.save
   end
 end
+
+def other_models
+  all_models = []
+  all_models << TestCouchModel2.new({name: 'test3'})
+  all_models << TestCouchModel2.new({name: 'test3'})
+  all_models << TestCouchModel2.new({name: 'test3'})
+  all_models
+end
+
 
 def all_models
   all_models = []
