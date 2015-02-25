@@ -110,20 +110,20 @@ class CouchStruct
   end
   protected :modifiable
 
-  #
+
   # Used internally to defined properties on the
   # OpenStruct. It does this by using the metaprogramming function
   # define_singleton_method for both the getter method and the setter method.
-  #
-  # def new_ostruct_member(name)
-  #   name = name.to_sym
-  #   unless respond_to?(name)
-  #     define_singleton_method(name) { get_table_element(name) }
-  #     define_singleton_method("#{name}=") { |x| modifiable[name] = x }
-  #   end
-  #   name
-  # end
-  # protected :new_ostruct_member
+
+  def new_ostruct_member(name)
+    name = name.to_sym
+    unless respond_to?(name)
+      define_singleton_method(name) { get_table_element(name) }
+      define_singleton_method("#{name}=") { |x| modifiable[name] = x }
+    end
+    name
+  end
+  protected :new_ostruct_member
 
   def method_missing(mid, *args) # :nodoc:
     mname = mid.id2name
