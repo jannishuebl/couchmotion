@@ -67,6 +67,9 @@ class CouchModel < CouchStruct
     self.class.new document.properties
   end
 
+  def refresh
+    self.new CouchDB.document_with(_id).properties
+  end
 end
 
 # class TestCouchModel2 < CouchModel
