@@ -31,16 +31,18 @@ class CouchStruct
 
   end
 
-  def initialize(hash=nil)
+  def initialize(hash={})
     @@collections ||= []
+    col_hash = {}
     @@collections.each do |collection|
-      hash ||= {}
-      hash[collection] = []
+      col_hash[collection] = []
     end
 
+    hash_new = hash.merge col_hash
+
     @table = {}
-    if hash
-      hash.each_pair do |k, v|
+    if hash_new
+      hash_new.each_pair do |k, v|
         k = k.to_sym.id2name
         @table[k] = v
         # if is_element_a_reference(v)
