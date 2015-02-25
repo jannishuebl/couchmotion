@@ -54,11 +54,21 @@ class CouchModel < CouchStruct
   def save
     document = CouchDB.create_document
     self.model_type = self.class.name
-    self._id = document.put self.to_h
-    self
+
+    document.put self.to_db_hash
+
+    self.class.new document.properties
+  end
+
+  def update
+    document = CouchDB.document_with(self._id)
+    self.model_type = self.class.name
+    self._id = document.put self.to_db_hash
+    self.class.new document.properties
   end
 
 end
+
 class TestCouchModel2 < CouchModel
 
   collection :member

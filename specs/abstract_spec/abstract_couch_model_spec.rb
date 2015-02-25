@@ -14,7 +14,7 @@ shared 'AbstractCouchModel' do
     db_test_model = TestCouchModel.fetch_by_id id
 
     expect(db_test_model.name).to eq test_model.name
-    expect(db_test_model._id).to eq test_model._id
+    expect(db_test_model._id).to eq id
 
     CouchDB.destroy
     CouchDB.close
@@ -30,6 +30,51 @@ shared 'AbstractCouchModel' do
 
     CouchDB.destroy
     CouchDB.close
+  end
+
+  it 'should persist collections.' do
+    open_database
+
+    test_model = TestCouchModel.new
+    test_model_col1 = TestCouchModel.new.save
+    test_model_col2 = TestCouchModel.new.save
+
+    test_model.col << test_model_col1
+    test_model.col << test_model_col2
+
+    cols = test_model.to_db_hash['col']
+
+    expect(cols[0]).to eq({type: 'TestCouchModel', id: test_model_col1._id})
+    expect(cols[1]).to eq({type: 'TestCouchModel', id: test_model_col2._id})
+
+
+    CouchDB.destroy
+    CouchDB.close
+  end
+
+  it 'should create lazy collection for persisted collections' do
+    open_database
+
+    test_model = TestCouchModel.new
+    test_model_col1 = TestCouchModel.new.save
+    test_model_col2 = TestCouchModel.new.save
+
+    test_model.col << test_model_col1
+    test_model.col << test_model_col2
+
+    db_model = test_model.save
+
+    expect(db_model.to_h['col']).to be_kind_of(LazyCollection)
+
+    expect(db_model.col[0]._id).to eq(test_model_col1._id)
+
+    # expect(cols[0]).to eq({type: 'TestCouchModel', id: test_model_col1._id})
+    # expect(cols[1]).to eq({type: 'TestCouchModel', id: test_model_col2._id})
+
+
+    CouchDB.destroy
+    CouchDB.close
+
   end
 
   def expect_list_contains_same_models(actual, expected)
@@ -80,5 +125,7 @@ end
 
 
 class TestCouchModel < CouchModel
+
+  collection :col
 
 end

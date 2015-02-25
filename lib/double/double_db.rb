@@ -18,3 +18,4 @@ require_relative '../general/couch_db/couch_db_impl'
 
 require_relative '../general/utils/couchstruct'
 require_relative '../general/couch_model'
+require_relative '../general/lazy_reference'

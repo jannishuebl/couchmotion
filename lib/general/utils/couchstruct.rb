@@ -35,7 +35,12 @@ class CouchStruct
     @@collections ||= []
     col_hash = {}
     @@collections.each do |collection|
-      col_hash[collection] = []
+
+      if hash[collection]
+        col_hash[collection]  = LazyCollection.new(hash[collection])
+      else
+        col_hash[collection] = []
+      end
     end
 
     hash_new = hash.merge col_hash
@@ -52,6 +57,20 @@ class CouchStruct
         # end
       end
     end
+  end
+
+  def to_db_hash
+    hash = to_h
+    @@collections.each do | collection|
+
+      hash[collection.to_s] = hash[collection.to_s].map do | item |
+        type = item.class.name
+        id = item._id
+
+        {type: type, id:id}
+      end
+    end
+    hash
   end
 
   def is_element_a_collection(v)
@@ -159,7 +178,11 @@ class CouchStruct
   end
 
   def get_table_element(id)
-    table[id]
+    element = table[id]
+    if element.kind_of?(Lazy)
+      element = element.real_object
+    end
+    element
   end
 
   def table
