@@ -19,6 +19,7 @@ class CouchModel < CouchStruct
     CouchDB.add_view[view_name] = {map: map, reduce: reduce, version: version}
   end
 
+
   view_for_type :all_for_type, map: Proc.new { |doc, emitter| emitter.emit doc.property_for(:model_type), nil }
 
   def self.all
@@ -52,5 +53,7 @@ class CouchModel < CouchStruct
 
 end
 class TestCouchModel2 < CouchModel
+
+  collection :member
 
 end

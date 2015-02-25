@@ -24,7 +24,20 @@ class CouchStruct
   #   end
   # end
 
+  def self.collection(field)
+
+    @@collections ||= []
+    @@collections << field
+
+  end
+
   def initialize(hash=nil)
+    @@collections ||= []
+    @@collections.each do |collection|
+      hash ||= {}
+      hash[collection] = []
+    end
+
     @table = {}
     if hash
       hash.each_pair do |k, v|
