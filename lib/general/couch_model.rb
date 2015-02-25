@@ -5,9 +5,13 @@ class CouchModel < CouchStruct
 
   def self.view_for_type(view_name, options)
 
+    class_type = self.name
+    class_type = options[:type].name if options[:type]
+
     map = Proc.new do | document , emitter|
       type = document.property_for(:model_type)
-      if type
+
+      if type && type == class_type
         options[:map].call document, emitter
       end
     end
@@ -19,12 +23,13 @@ class CouchModel < CouchStruct
     CouchDB.add_view[view_name] = {map: map, reduce: reduce, version: version}
   end
 
+  def self.inherited(subclass)
+    view_for_type :all_for_type, map: Proc.new { |doc, emitter| emitter.emit doc.property_for(:model_type), nil }, type: subclass
+  end
 
-  view_for_type :all_for_type, map: Proc.new { |doc, emitter| emitter.emit doc.property_for(:model_type), nil }
 
   def self.all
     query = CouchDB.view_by(:all_for_type).create_query
-    query.with_keys self.name
     enumerator = query.execute
     enumerator.map do |key, document|
       self.new document.properties
