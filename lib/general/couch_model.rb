@@ -8,7 +8,7 @@ class CouchModel < CouchStruct
     class_type = self.name
     class_type = options[:type].name if options[:type]
 
-    map = Proc.new do | document , emitter|
+    map = Proc.new do |document, emitter|
       type = document.property_for(:model_type)
 
       if type && type == class_type
@@ -24,7 +24,7 @@ class CouchModel < CouchStruct
   end
 
   def self.inherited(subclass)
-    view_for_type :"all_for_#{subclass.name}", map: Proc.new { |doc, emitter| emitter.emit doc.property_for(:model_type), nil}, type: subclass
+    view_for_type :"all_for_#{subclass.name}", map: Proc.new { |doc, emitter| emitter.emit doc.property_for(:model_type), nil }, type: subclass
   end
 
 
@@ -52,23 +52,46 @@ class CouchModel < CouchStruct
 
 
   def save
+    if persisted?
+      document = update_document
+    else
+      document = create_document
+    end
+    self.class.new document.properties
+  end
+
+  def save!
+    if persisted?
+      document = update_document
+    else
+      document = create_document
+    end
+    self.marshal_load document.properties
+  end
+
+  def create_document
     document = CouchDB.create_document
     self.model_type = self.class.name
 
     document.put self.to_db_hash
-
-    self.class.new document.properties
+    document
   end
 
-  def update
+  def update_document
     document = CouchDB.document_with(self._id)
     self.model_type = self.class.name
-    self._id = document.put self.to_db_hash
-    self.class.new document.properties
+    document.put self.to_db_hash
+    document
   end
 
   def refresh
-    self.class.new CouchDB.document_with(_id).properties
+    return self.class.new CouchDB.document_with(_id).properties if persisted?
+    self.new table
+  end
+
+  def refresh!
+    return self.marshal_load CouchDB.document_with(_id).properties if persisted?
+    self
   end
 
   def persisted?

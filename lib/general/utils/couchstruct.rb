@@ -1,28 +1,5 @@
+
 class CouchStruct
-  #
-  # Creates a new OpenStruct object.  By default, the resulting OpenStruct
-  # object will have no attributes.
-  #
-  # The optional +hash+, if given, will generate attributes and values
-  # (can be a Hash, an OpenStruct or a Struct).
-  # For example:
-  #
-  #   require 'ostruct'
-  #   hash = { "country" => "Australia", :population => 20_000_000 }
-  #   data = OpenStruct.new(hash)
-  #
-  #   p data        # -> <OpenStruct country="Australia" population=20000000>
-  #
-  # def initialize(hash=nil)
-  #   @table = {}
-  #   if hash
-  #     hash.each_pair do |k, v|
-  #       k = k.to_sym
-  #       @table[k] = v
-  #       new_ostruct_member(k)
-  #     end
-  #   end
-  # end
 
   def self.collection(field)
     @collections ||= []
@@ -36,46 +13,14 @@ class CouchStruct
 
 
   def initialize(hash={})
-    col_hash = {}
-    self.class.collections.each do |collection|
-
-      if hash[collection]
-        col_hash[collection] = LazyCollection.new(hash[collection])
-      else
-        col_hash[collection] = []
-      end
-    end
-
-    hash_new = hash.merge col_hash
-
-    @table = {}
-    if hash_new
-      hash_new.each_pair do |k, v|
-        k = k.to_sym.id2name
-        @table[k] = v
-        # if is_element_a_reference(v)
-        #   @table[k] = LazyReference.new(v[:_id])
-        # elsif is_element_a_collection(v)
-        #   @table[k] = LazyCollection.new(v[:_ids])
-        # end
-      end
-    end
+    marshal_load(hash)
   end
 
   def to_db_hash
     hash = to_h
     self.class.collections.each do |collection|
 
-      if hash[collection.to_s].kind_of? Lazy
-        hash[collection.to_s] = hash[collection.to_s].objs
-      else
-        hash[collection.to_s] = hash[collection.to_s].map do |item|
-          type = item.class.name
-          id = item._id
-
-          {type: type, id: id}
-        end
-      end
+      hash[collection.to_s] = hash[collection.to_s].db_objects
     end
     hash
   end
@@ -86,13 +31,6 @@ class CouchStruct
 
   def is_element_a_reference(v)
     v.kind_of?(Hash) && v.has_key?(:_id) && v.has_key?(:_typ) && v[:_typ] == 'ref'
-  end
-
-  # Duplicate an OpenStruct object members.
-  def initialize_copy(orig)
-    super
-    @table = @table.dup
-    @table.each_key { |key| new_ostruct_member(key) }
   end
 
   #
@@ -132,9 +70,26 @@ class CouchStruct
   #
   # Provides marshalling support for use by the Marshal library.
   #
-  def marshal_load(x)
-    @table = x
-    @table.each_key { |key| new_ostruct_member(key) }
+  def marshal_load(hash)
+    col_hash = {}
+    self.class.collections.each do |collection|
+
+      if hash[collection]
+        col_hash[collection] = LazyCollection.new(hash[collection], self)
+      else
+        col_hash[collection] = LazyCollection.new([], self)
+      end
+    end
+
+    hash_new = hash.merge col_hash
+
+    @table = {}
+    if hash_new
+      hash_new.each_pair do |k, v|
+        k = k.to_sym.id2name
+        @table[k] = v
+      end
+    end
   end
 
   def add_hash(hash)
@@ -157,19 +112,17 @@ class CouchStruct
     end
     @table
   end
-
   protected :modifiable
 
 
   # Used internally to defined properties on the
   # OpenStruct. It does this by using the metaprogramming function
   # define_singleton_method for both the getter method and the setter method.
-
   def new_ostruct_member(name)
     name = name.to_sym
     unless respond_to?(name)
       define_singleton_method(name) { get_table_element(name) }
-      define_singleton_method("#{name}=") { |x| modifiable[name] = x }
+      define_singleton_method("#{name}=") { |x| table[name] = x }
     end
     name
   end
@@ -195,11 +148,7 @@ class CouchStruct
   end
 
   def get_table_element(id)
-    element = table[id]
-    if element.kind_of?(Lazy)
-      element = table[id] = element.real_object
-    end
-    element
+    table[id]
   end
 
   def table
@@ -259,7 +208,7 @@ class CouchStruct
   # equal.
   #
   def ==(other)
-    return false unless other.kind_of?(OpenStruct)
+    return false unless other.kind_of?(CouchStruct)
     @table == other.table
   end
 
@@ -269,7 +218,7 @@ class CouchStruct
   # eql?.
   #
   def eql?(other)
-    return false unless other.kind_of?(OpenStruct)
+    return false unless other.kind_of?(CouchStruct)
     @table.eql?(other.table)
   end
 

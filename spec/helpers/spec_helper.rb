@@ -12,6 +12,7 @@ def shared(desc, &block)
   RSpec.shared_examples desc, &block
 end
 
+require_relative 'hash'
 require_relative '../../lib/double/double_db'
 require_relative '../../specs/abstract_spec/abstract_couch_model_spec'
 require_relative '../../specs/abstract_spec/abstract_couch_db_spec'

@@ -15,6 +15,8 @@ Gem::Specification.new do |s|
   s.files       = Dir.glob("lib/**/*.rb").concat(Dir.glob("vendor/native_libs/**/*.so")) << "README.md" << "LICENSE" << "vendor/cbl_collator_so-1.0.3.1.jar"
 
 # Dependencies
+
+  s.add_dependency 'motion-support'
   s.add_dependency "motion-maven"
   s.add_dependency "motion-require"
   s.add_dependency "motion-cocoapods"

@@ -5,6 +5,8 @@ end
 require 'rubygems'
 require 'motion-require'
 
+require 'motion-support/core_ext/hash'
+
 Motion::Require.all( Dir.glob(File.join(File.dirname(__FILE__), 'general/**/*.rb')))
 Motion::Require.all( Dir.glob(File.join(File.dirname(__FILE__), 'ios/**/*.rb')))
 
