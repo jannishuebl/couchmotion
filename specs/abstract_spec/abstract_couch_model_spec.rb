@@ -91,6 +91,21 @@ shared 'AbstractCouchModel' do
     CouchDB.close
   end
 
+  it 'should accept a hash and add it to it selfs fields' do
+
+    open_database
+
+    test_model = TestCouchModel.new({test: 'hallo', test2:'hallo'})
+
+    test_model.add_hash({test2:'hallo2', test3:'hallo3'})
+
+    expect(test_model.test).to eq 'hallo'
+    expect(test_model.test2).to eq 'hallo2'
+    expect(test_model.test3).to eq 'hallo3'
+
+  end
+
+
 
   def expect_list_contains_same_models(actual, expected)
     expect(actual.size).to eq expected.size

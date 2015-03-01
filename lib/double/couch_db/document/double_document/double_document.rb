@@ -3,7 +3,7 @@ module CouchDB
     class DoubleDocument
 
     def initialize id
-      @properties = {_id: id} 
+      @properties = {_id: id, _rev: 'rev'}
     end
 
     def put(new_properties)

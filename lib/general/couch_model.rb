@@ -78,6 +78,8 @@ class CouchModel < CouchStruct
     false
   end
 
+
+
 end
 
 # class TestCouchModel2 < CouchModel

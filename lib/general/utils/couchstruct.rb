@@ -137,6 +137,14 @@ class CouchStruct
     @table.each_key { |key| new_ostruct_member(key) }
   end
 
+  def add_hash(hash)
+    hash.each do |key, value|
+      table[key] = value
+      new_ostruct_member(key)
+    end
+  end
+
+
   #
   # Used internally to check if the OpenStruct is able to be
   # modified before granting access to the internal Hash table to be modified.
