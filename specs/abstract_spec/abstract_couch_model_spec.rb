@@ -76,6 +76,22 @@ shared 'AbstractCouchModel' do
 
   end
 
+  it 'should tell if it is persisted or is not' do
+    open_database
+
+    test_model = TestCouchModel.new
+
+    expect(test_model.persisted?).to be false
+
+    test_model_saved = test_model.save
+
+    expect(test_model_saved.persisted?).to be true
+
+    CouchDB.destroy
+    CouchDB.close
+  end
+
+
   def expect_list_contains_same_models(actual, expected)
     expect(actual.size).to eq expected.size
     count = expected.size

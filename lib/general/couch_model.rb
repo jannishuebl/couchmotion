@@ -70,6 +70,14 @@ class CouchModel < CouchStruct
   def refresh
     self.class.new CouchDB.document_with(_id).properties
   end
+
+  def persisted?
+    if _id && _rev
+      return true
+    end
+    false
+  end
+
 end
 
 # class TestCouchModel2 < CouchModel
