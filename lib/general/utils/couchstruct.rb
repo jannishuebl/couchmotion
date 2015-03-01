@@ -139,8 +139,8 @@ class CouchStruct
 
   def add_hash(hash)
     hash.each do |key, value|
-      table[key] = value
-      new_ostruct_member(key)
+      k = key.to_sym.id2name
+      table[k] = value
     end
   end
 

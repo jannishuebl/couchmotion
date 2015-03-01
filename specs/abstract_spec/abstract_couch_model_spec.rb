@@ -97,7 +97,12 @@ shared 'AbstractCouchModel' do
 
     test_model = TestCouchModel.new({test: 'hallo', test2:'hallo'})
 
+    puts test_model.inspect
+
     test_model.add_hash({test2:'hallo2', test3:'hallo3'})
+
+
+    puts test_model.inspect
 
     expect(test_model.test).to eq 'hallo'
     expect(test_model.test2).to eq 'hallo2'
