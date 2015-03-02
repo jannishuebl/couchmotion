@@ -1,11 +1,12 @@
-require 'codeclimate-test-reporter'
-
-CodeClimate::TestReporter.start
+if ENV['CODECLIMATE_REPO_TOKEN']
+  require 'codeclimate-test-reporter'
+  CodeClimate::TestReporter.start
+end
 
 require 'rspec'
 
-motion_support_path = Gem::Specification.find_by_name('motion-support').gem_dir
-require "#{motion_support_path}/motion/concern.rb"
+# motion_support_path = Gem::Specification.find_by_name('motion-support').gem_dir
+# require "#{motion_support_path}/motion/concern.rb"
 
 
 def shared(desc, &block)
