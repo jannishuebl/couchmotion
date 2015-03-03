@@ -18,13 +18,15 @@ module CouchDB
 
     def create_document
       id = SecureRandom.uuid
-      document = CouchDB::Document::DoubleDocument.new id
+      document = CouchDB::Document::DoubleDocument.new id, self
       documents[id] = document
       document
     end
 
     def document_with(id)
-      documents[id]
+      doc = documents[id]
+      return CouchDB::Document::DoubleDocument.new id, self unless doc
+      doc
     end
 
     def view_by(name)
@@ -37,6 +39,10 @@ module CouchDB
     def destroy
       @views = {}
       @documents = {}
+    end
+
+    def delete_doc(_id)
+      documents.delete(_id)
     end
 
   end

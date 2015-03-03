@@ -1,6 +1,17 @@
 
 class CouchStruct
 
+  def self.field(name, options={})
+    options[:name] = name
+    @fields ||= []
+    @fields << options
+  end
+
+  def self.fields
+    @fields ||= []
+    @fields
+  end
+
   def self.collection(field)
     @collections ||= []
     @collections << field
@@ -19,8 +30,13 @@ class CouchStruct
   def to_db_hash
     hash = to_h
     self.class.collections.each do |collection|
-
       hash[collection.to_s] = hash[collection.to_s].db_objects
+    end
+    self.class.fields.each do |field|
+      field_data = hash[field[:name].to_s]
+      if field_data
+        hash[field[:name].to_s] = field[:from].call field_data
+      end
     end
     hash
   end
@@ -71,6 +87,7 @@ class CouchStruct
   # Provides marshalling support for use by the Marshal library.
   #
   def marshal_load(hash)
+    hash = {} unless hash
     col_hash = {}
     self.class.collections.each do |collection|
 
@@ -78,6 +95,14 @@ class CouchStruct
         col_hash[collection] = LazyCollection.new(hash[collection], self)
       else
         col_hash[collection] = LazyCollection.new([], self)
+      end
+    end
+
+    self.class.fields.each do | field|
+      field_data = hash[field[:name]]
+      if field_data && field[:class] && !field_data.kind_of?(field[:class])
+        field_data = field_data.symbolize_keys if field_data.kind_of? Hash
+        col_hash[field[:name]] = field[:to].call(field_data)
       end
     end
 

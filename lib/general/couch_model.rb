@@ -47,7 +47,8 @@ class CouchModel < CouchStruct
   end
 
   def self.fetch_by_id(id)
-    self.new CouchDB.document_with(id).properties
+    doc = CouchDB.document_with(id)
+    return self.new doc.properties
   end
 
 
@@ -101,6 +102,9 @@ class CouchModel < CouchStruct
     false
   end
 
+  def delete
+    CouchDB.document_with(_id).delete
+  end
 
 end
 

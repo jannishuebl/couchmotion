@@ -2,8 +2,9 @@ module CouchDB
   class Document
     class DoubleDocument
 
-    def initialize id
+    def initialize(id, database)
       @properties = {_id: id, _rev: 'rev'}
+      @database = database
     end
 
     def put(new_properties)
@@ -18,6 +19,11 @@ module CouchDB
     def properties
       @properties
     end
+
+      def delete
+        @database.delete_doc(property_for(:_id))
+        true
+      end
 
     end
   end

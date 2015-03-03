@@ -145,6 +145,26 @@ shared 'AbstractCouchModel' do
 
   end
 
+  it 'should give the possibility to add fields that are not of a elementary type' do
+    open_database
+
+
+    expected_currency = Currency.new({curr: 'euro'})
+
+    test_model = TestCouchModel.new
+
+    test_model.currency = expected_currency
+
+    test_model.save!
+
+    test_model2 = TestCouchModel.fetch_by_id(test_model._id)
+
+    expect(test_model2.currency.to_h).to eq(expected_currency.to_h)
+
+    CouchDB.destroy
+    CouchDB.close
+  end
+
   it 'should tell if it is persisted or is not' do
     open_database
 
@@ -208,6 +228,21 @@ shared 'AbstractCouchModel' do
   end
 
 
+  it 'should can be deleted' do
+    open_database
+
+    test_model = TestCouchModel.new({test: 'hallo', test2:'hallo'})
+    test_model = test_model.save
+
+    test_model2 = TestCouchModel.fetch_by_id(test_model._id)
+    success = test_model2.delete
+
+    expect(success).to be true
+
+    test_model2 = TestCouchModel.fetch_by_id(test_model._id)
+    expect(test_model2.test).to be nil
+    expect(test_model2.test2).to be nil
+  end
 
 
   def expect_list_contains_same_models(actual, expected)
@@ -256,10 +291,25 @@ def all_models
 end
 
 
+class Currency
+
+  def initialize(hash)
+    @hash = hash
+  end
+
+  def to_h
+    @hash
+  end
+
+  def equal?(other)
+    @hash.equal? other.to_h
+  end
+end
 
 class TestCouchModel < CouchModel
 
   collection :col
+  field :currency, class: Currency, to: Proc.new { | hash | Currency.new(hash) }, from: Proc.new {| currency | currency.to_h}
 
 end
 class TestCouchModel2 < CouchModel
