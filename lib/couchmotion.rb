@@ -4,12 +4,6 @@ end
 
 require 'rubygems'
 require 'motion-require'
-require 'rake/hooks'
-
-# motion_support_path =
-# require 'motion-support/core_ext/hash/keys'
-
-# Motion::Require.all(Dir.glob(File.join(Gem::Specification.find_by_name('motion-support').gem_dir, 'motion/core_ext/hash/keys.rb')))
 
 Motion::Require.all( Dir.glob(File.join(File.dirname(__FILE__), 'general/**/*.rb')))
 
