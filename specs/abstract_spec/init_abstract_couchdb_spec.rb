@@ -18,11 +18,11 @@ shared 'CouchDB' do
 
     expect(CouchDB.manager).to be nil
 
-    # puts CouchDB.databases.inspect
     expect(CouchDB.databases).to eq Hash.new
   end
 
   it 'should open a database and store it.' do
+    open_manager
     result = open_database :database_name
 
     expect(result).to be true
@@ -32,6 +32,7 @@ shared 'CouchDB' do
   end
 
   it 'should open multiple databases and store them.' do
+    open_manager
     result = open_database :database_name1
     expect(result).to be true
     result = open_database :database_name2
@@ -47,6 +48,7 @@ shared 'CouchDB' do
   end
 
   it 'should open multiple databases and give return them.' do
+    open_manager
     result = open_database :database_name1
     expect(result).to be true
     result = open_database :database_name2
@@ -62,6 +64,7 @@ shared 'CouchDB' do
   end
 
   it 'should return the first added by default.' do
+    open_manager
     result = open_database :database_name1
     expect(result).to be true
     result = open_database :database_name2

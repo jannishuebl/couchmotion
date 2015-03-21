@@ -1,4 +1,6 @@
 motion_require 'couch_db/couch_db_impl'
+
+motion_require 'utils/keys'
 motion_require 'utils/couchstruct'
 
 class CouchModel < CouchStruct

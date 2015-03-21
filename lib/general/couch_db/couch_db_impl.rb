@@ -2,6 +2,15 @@ module CouchDB
 
   module ClassMethods
 
+    def open(database_name)
+      database = CouchDB::Database.new(database_name, @manager.open(database_name))
+      @databases ||= Hash.new
+      @databases[database_name] = database
+      @default ||= database
+      create_views
+      true
+    end
+
     def manager=(manager)
 
     end

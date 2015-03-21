@@ -1,13 +1,7 @@
 class CouchDB
   class AndroidCouchDB
-    def initialize(database_name, context)
-      begin
-        context = Com::Couchbase::Lite::Android::AndroidContext.new context
-        manager = Com::Couchbase::Lite::Manager.new context , Com::Couchbase::Lite::Manager::DEFAULT_OPTIONS
-        @database = manager.getDatabase(database_name)
-      rescue Exception => e
-        raise CouldNotOpenDatabase.new e
-      end
+    def initialize(database)
+      @database = database
     end
 
     def create_document

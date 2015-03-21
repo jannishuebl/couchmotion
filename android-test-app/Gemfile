@@ -3,4 +3,4 @@ source 'https://rubygems.org'
 
 gem 'rake'
 
-gem 'couchmotion', :path => '..', :group => :development
+gem 'couchmotion', :path => '..'

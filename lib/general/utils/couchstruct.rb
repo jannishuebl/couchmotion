@@ -1,4 +1,4 @@
-
+motion_require 'keys'
 class CouchStruct
 
   def self.field(name, options={})
@@ -88,6 +88,11 @@ class CouchStruct
   #
   def marshal_load(hash)
     hash = {} unless hash
+    # if(hash_old)
+    #   hash_old.each do |key, value|
+    #     hash[key] = value
+    #   end
+    # end
     col_hash = {}
     self.class.collections.each do |collection|
 
@@ -101,7 +106,13 @@ class CouchStruct
     self.class.fields.each do | field|
       field_data = hash[field[:name]]
       if field_data && field[:class] && !field_data.kind_of?(field[:class])
-        field_data = field_data.symbolize_keys if field_data.kind_of? Hash
+        if field_data.kind_of? Hash
+          field_data_temp = {}
+          field_data.each do |key, value |
+            field_data_temp[key.to_sym] = value
+          end
+          field_data = field_data_temp
+        end
         col_hash[field[:name]] = field[:to].call(field_data)
       end
     end
@@ -225,7 +236,6 @@ class CouchStruct
   # alias :to_s :inspect
 
   attr_reader :table # :nodoc:
-  protected :table
 
   #
   # Compares this object and +other+ for equality.  An OpenStruct is equal to
