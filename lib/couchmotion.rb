@@ -5,12 +5,9 @@ end
 require 'rubygems'
 require 'motion-require'
 
-Motion::Require.all( Dir.glob(File.join(File.dirname(__FILE__), 'general/**/*.rb')))
+Motion::Require.all( Dir.glob(File.join(File.dirname(__FILE__), 'common/**/*.rb')))
 
 Motion::Project::App.setup do |app|
-  Dir.glob(File.join(File.dirname(__FILE__), 'general/**/*.rb')).each do | file |
-    app.files.unshift(file)
-  end
   if Motion::Project.constants.include? :IOSConfig
     config_couchmotion_for_ios app
   end

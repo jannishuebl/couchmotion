@@ -1,7 +1,7 @@
-motion_require 'couch_db/couch_db_impl'
+motion_require '../couch_db/couch_db'
 
-motion_require 'utils/keys'
-motion_require 'utils/couchstruct'
+motion_require '../utils/keys'
+motion_require 'couchstruct'
 
 class CouchModel < CouchStruct
 

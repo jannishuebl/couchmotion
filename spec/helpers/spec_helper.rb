@@ -5,9 +5,6 @@ end
 
 require 'rspec'
 
-# motion_support_path = Gem::Specification.find_by_name('motion-support').gem_dir
-# require "#{motion_support_path}/motion/concern.rb"
-
 
 def shared(desc, &block)
   RSpec.shared_examples desc, &block

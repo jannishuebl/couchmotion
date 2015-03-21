@@ -1,4 +1,5 @@
-motion_require 'keys'
+motion_require '../utils/keys'
+  
 class CouchStruct
 
   def self.field(name, options={})
