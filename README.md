@@ -5,6 +5,10 @@ Couchmotion
 
 A gem for integration [couchbase-lite-android](https://github.com/couchbase/couchbase-lite-android) and [couchbase-lite-ios](https://github.com/couchbase/couchbase-lite-ios) into a RubyMotion application.
 
+# Not maintained anymore 
+
+This Gem is currently not maintained anymore. If anybody wants to maintaine it and implement some Features you are free to do so!! 
+
 ## Setup
 ### IOS
 
