@@ -7,7 +7,7 @@ A gem for integration [couchbase-lite-android](https://github.com/couchbase/couc
 
 # Not maintained anymore 
 
-This Gem is currently not maintained anymore. If anybody wants to maintaine it and implement some Features you are free to do so!! 
+This Gem is currently not maintained anymore. If anybody wants to maintain the Gem and implement some Features you welcome to do it!! 
 
 ## Setup
 ### IOS
